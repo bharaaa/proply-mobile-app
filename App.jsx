@@ -4,6 +4,8 @@ import SplashScreenView from './SplashScreenView';
 import { useEffect, useState } from 'react';
 import Route from './src/route/route';
 import { useFonts } from "expo-font";
+import { PaperProvider } from 'react-native-paper';
+import AppPaperProvider from './src/component/AppPaperProvider';
 
 export default function App() {
   const [isShowSplash, setIsShowSplash] = useState(true)
@@ -17,15 +19,16 @@ export default function App() {
   // const [hideSplashScreen, setHideSplashScreen] = useState(true);
 
   const [fontsLoaded, error] = useFonts({
-    "Sora-Regular": require("./assets/fonts/Sora/Sora-Regular.ttf"),
-    "Sora-Medium": require("./assets/fonts/Sora/Sora-Medium.ttf"),
-    "Sora-SemiBold": require("./assets/fonts/Sora/Sora-SemiBold.ttf"),
-    "Sora-Bold": require("./assets/fonts/Sora/Sora-Bold.ttf"),
+    "Sora-Regular": require("./assets/fonts/Sora-Regular.ttf"),
+    "Sora-Medium": require("./assets/fonts/Sora-Medium.ttf"),
+    "Sora-SemiBold": require("./assets/fonts/Sora-SemiBold.ttf"),
+    "Sora-Bold": require("./assets/fonts/Sora-Bold.ttf"),
+    "Sora-Light": require("./assets/fonts/Sora-Light.ttf"),
     
-    "PlusJakartaSans-Regular": require("./assets/fonts/Plus_Jakarta_Sans/PlusJakartaSans-Regular.ttf"),
-    "PlusJakartaSans-Medium": require("./assets/fonts/Plus_Jakarta_Sans/PlusJakartaSans-Medium.ttf"),
-    "PlusJakartaSans-SemiBold": require("./assets/fonts/Plus_Jakarta_Sans/PlusJakartaSans-SemiBold.ttf"),
-    "PlusJakartaSans-Bold": require("./assets/fonts/Plus_Jakarta_Sans/PlusJakartaSans-Bold.ttf"),
+    "PlusJakartaSans-Regular": require("./assets/fonts/PlusJakartaSans-Regular.ttf"),
+    "PlusJakartaSans-Medium": require("./assets/fonts/PlusJakartaSans-Medium.ttf"),
+    "PlusJakartaSans-SemiBold": require("./assets/fonts/PlusJakartaSans-SemiBold.ttf"),
+    "PlusJakartaSans-Bold": require("./assets/fonts/PlusJakartaSans-Bold.ttf"),
   });
 
   if (!fontsLoaded && !error) {
@@ -34,7 +37,10 @@ export default function App() {
 
   return (
     <>
-    {isShowSplash ? (<SplashScreenView/>) : (<Route/>)}
+    {isShowSplash ? (<SplashScreenView/>) : (
+    <AppPaperProvider>
+      <Route/>
+    </AppPaperProvider>)}
     </>
   );
 }
