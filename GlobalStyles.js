@@ -3,8 +3,9 @@ export const FontFamily = {
     soraMedium: "Sora-Medium",
     soraSemiBold: "Sora-SemiBold",
     soraBold: "Sora-Bold",
-    plusJakartaRegular: "PlusJakartaSans-Regular",
-    plusJakartaMedium: "PlusJakartaSans-Medium",
-    plusJakartaSemiBold: "PlusJakartaSans-SemiBold",
-    plusJakartaBold: "PlusJakartaSans-Bold",
+    soraLight: "Sora-Light",
+    plusJakartaSansRegular: "PlusJakartaSans-Regular",
+    plusJakartaSansMedium: "PlusJakartaSans-Medium",
+    plusJakartaSansSemiBold: "PlusJakartaSans-SemiBold",
+    plusJakartaSansBold: "PlusJakartaSans-Bold",
 };

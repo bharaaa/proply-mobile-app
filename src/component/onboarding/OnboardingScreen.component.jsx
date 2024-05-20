@@ -9,7 +9,7 @@ const OnboardingScreen = () => {
     const navigation = useNavigation()
 
     const handleDone = () => {
-        navigation.navigate('Home')
+        navigation.navigate('Login')
     }
 
     const doneButton = ({...props}) => {
