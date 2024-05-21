@@ -5,14 +5,28 @@ import { FontFamily } from '../../../GlobalStyles'
 import { Button } from 'react-native-paper'
 
 const HomeManager = () => {
+  const getCurrentHour = new Date().getHours()
+  let hello
+
+  if ( getCurrentHour >= 5 &&  getCurrentHour <= 12 ) {
+    hello = "Good Morning!"
+  }
+  else if ( getCurrentHour >= 12 && getCurrentHour < 18 ) {
+    hello = "Good Afternoon!"
+  }
+  else {
+    hello = "Good Evening!"
+  }
+
   return (
     <>
     <StatusBar barStyle="default" backgroundColor="#313131" />
     <View style={styles.container}>
         <View style={styles.headerContainer}>
-            <View style={styles.searchInputContainer}>
-                <Text style={styles.helloText}>Hello!</Text>
-            </View>
+          <View style={styles.helloContainer}>
+            <Text style={styles.helloText}>{hello}</Text>
+            <Text style={styles.goodDayText}>Have a good day</Text>
+          </View>
         </View>
         <View style={styles.ButtonContainer}>
           <Button 
@@ -48,19 +62,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     helloText: {
-        marginLeft: 20,
-        fontFamily: FontFamily.soraRegular,
-        fontSize: 14,
-        color: '#FFFFFF'
+      fontFamily: FontFamily.soraSemiBold,
+      fontSize: 25,
+      color: '#FFFFFF'
     },
-    searchInputContainer: {
-        backgroundColor: '#2A2A2A',
-        flexDirection: 'row',
+    goodDayText: {
+      fontFamily: FontFamily.soraRegular,
+      fontSize: 15,
+      color: '#FFFFFF',
+      marginTop: 2
+    },
+    helloContainer: {
         height: 60,
         borderRadius: 10,
         marginHorizontal: 30,
-        marginVertical: 20,
-        alignItems: 'center'
+        marginVertical: 20
     },
     ButtonContainer: {
         marginTop: 30,

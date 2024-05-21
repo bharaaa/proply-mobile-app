@@ -7,9 +7,9 @@ import Login from '../component/login/Login.component'
 import SignUp from '../component/sign-up/SignUp.component'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import SignUpSuccess from '../component/sign-up/SignUpSuccess.component'
-import HomeManager from '../component/home-manager/HomeManager'
+import HomeManager from '../component/home-manager/HomeManager.component'
 import { BottomNavigation } from 'react-native-paper'
-import BottomTab from '../component/botton-navigation/BottomTab'
+import BottomTab from '../component/botton-navigation/BottomTab.component'
 
 const Stack = createNativeStackNavigator()
 
@@ -18,7 +18,7 @@ const route = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator 
-        initialRouteName='BottomTab'
+        initialRouteName='Onboarding'
         screenOptions={{
           gestureEnabled: true,
           gestureDirection: 'horizontal',

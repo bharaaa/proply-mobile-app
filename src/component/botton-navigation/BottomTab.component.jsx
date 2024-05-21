@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { BottomNavigation, Text } from 'react-native-paper';
-import HomeManager from '../home-manager/HomeManager';
+import HomeManager from '../home-manager/HomeManager.component';
+import NotificationScreen from '../notification/NotificationScreen.component';
 
 const HomeRoute = () => <HomeManager/>;
-const NotificationsRoute = () => <Text>Notifications</Text>;
+const NotificationsRoute = () => <NotificationScreen/>;
 const AccountRoute = () => <Text>Account</Text>;
 
 const BottomTab = () => {
@@ -25,7 +26,7 @@ const BottomTab = () => {
       navigationState={{ index, routes }}
       onIndexChange={setIndex}
       renderScene={renderScene}
-      sceneAnimationType='shifting'
+      sceneAnimationType='opacity'
       barStyle={{
         backgroundColor: '#FFFFFF', 
         height: 90, 
