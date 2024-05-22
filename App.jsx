@@ -6,7 +6,7 @@ import Route from './src/route/route';
 import { useFonts } from "expo-font";
 import { PaperProvider } from 'react-native-paper';
 import AppPaperProvider from './src/component/AppPaperProvider';
-import BottomTab from './src/component/botton-navigation/BottomTab.component';
+import BottomTab from './src/component/bottom-navigation/BottomTab.component';
 
 export default function App() {
   const [isShowSplash, setIsShowSplash] = useState(true)

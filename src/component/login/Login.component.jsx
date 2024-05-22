@@ -37,7 +37,11 @@ const Login = () => {
       "getFieldState('email')": getFieldState("email"),
     });
     const { email, password } = getValues();
-    navigation.navigate("BottomTab", { email, password, isFromLogin: true });
+    if (email === 'admin@example.com' && password === 'password') {
+      navigation.navigate("BottomTab", { email, password, isFromLogin: true });
+    } else {
+      navigation.navigate("BottomTabEmployee", { email, password, isFromLogin: true });
+    }
   }
 
   const handleSignUp = () => {
