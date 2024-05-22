@@ -3,8 +3,9 @@ import { BottomNavigation, Text } from 'react-native-paper';
 import HomeManager from '../home-manager/HomeManager.component';
 import NotificationScreen from '../notification/NotificationScreen.component';
 import AccountProfile from '../account-profile/AccountProfile.component';
+import HomeEmployee from '../home-employee/HomeEmployee.component';
 
-const HomeRoute = () => <HomeManager/>;
+const HomeManagerRoute = () => <HomeManager/>;
 const NotificationsRoute = () => <NotificationScreen/>;
 const AccountProfileRoute = () => <AccountProfile/>;
 
@@ -17,7 +18,7 @@ const BottomTab = () => {
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
-    home: HomeRoute,
+    home: HomeManagerRoute,
     notifications: NotificationsRoute,
     account: AccountProfileRoute,
   });
