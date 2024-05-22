@@ -18,7 +18,7 @@ const NotificationScreen = () => {
     const renderItem = ({ item }) => (
         <Button
           mode="outlined"
-          contentStyle={styles.listButton}
+          contentStyle={styles.listNotification}
           onPress={item.onPress}
           style={{ marginVertical: 10, backgroundColor: '#F9F9F9' }}
         >
@@ -77,12 +77,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         justifyContent: 'center',
       },
-    listButton: {
+    listNotification: {
         borderRadius: 10,
         padding: 10,
         marginVertical: 10,
         height: 70,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
       },
     listButtonText: {
         fontSize: 14,
