@@ -9,7 +9,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import SignUpSuccess from '../component/sign-up/SignUpSuccess.component'
 import HomeManager from '../component/home-manager/HomeManager.component'
 import { BottomNavigation } from 'react-native-paper'
-import BottomTab from '../component/botton-navigation/BottomTab.component'
+import BottomTab from '../component/bottom-navigation/BottomTab.component'
+import HomeEmployee from '../component/home-employee/HomeEmployee.component'
+import BottomTabEmployee from '../component/bottom-navigation/BottomTabEmployee.component'
 
 const Stack = createNativeStackNavigator()
 
@@ -28,9 +30,8 @@ const route = () => {
             <Stack.Screen name='Onboarding' options={{headerShown: false}} component={OnboardingScreen}/>
             <Stack.Screen name='Login' options={{headerShown: false}} component={Login}/>
             <Stack.Screen name='SignUp' options={{headerShown: false}} component={SignUp}/>
-            <Stack.Screen name='SignUpSuccess' options={{headerShown: false}} component={SignUpSuccess}/>
-            <Stack.Screen name='HomeManager' options={{headerShown: false}} component={HomeManager}/>
             <Stack.Screen name='BottomTab' options={{headerShown: false}} component={BottomTab}/>
+            <Stack.Screen name='BottomTabEmployee' options={{headerShown: false}} component={BottomTabEmployee}/>
         </Stack.Navigator>
     </NavigationContainer>
   )
