@@ -37,7 +37,7 @@ const Login = () => {
       "getFieldState('email')": getFieldState("email"),
     });
     const { email, password } = getValues();
-    // navigation.navigate("Home", { email, password, isFromLogin: true });
+    navigation.navigate("BottomTab", { email, password, isFromLogin: true });
   }
 
   const handleSignUp = () => {
