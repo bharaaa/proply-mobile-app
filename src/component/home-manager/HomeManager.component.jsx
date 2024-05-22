@@ -3,8 +3,10 @@ import React from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import { FontFamily } from '../../../GlobalStyles'
 import { Button } from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native'
 
 const HomeManager = () => {
+  const navigation = useNavigation()
   const getCurrentHour = new Date().getHours()
   let hello
 
@@ -16,6 +18,10 @@ const HomeManager = () => {
   }
   else {
     hello = "Good Evening!"
+  }
+
+  const handleProcurementList = () => {
+    navigation.navigate('ProcurementList')
   }
 
   return (
@@ -32,7 +38,7 @@ const HomeManager = () => {
           <Button 
           mode="contained" 
           style={styles.listButton}
-          onPress={() => console.log('Pressed')}
+          onPress={handleProcurementList}
           >
             <Text style={styles.listButtonText}>Procurement List</Text>
           </Button>
