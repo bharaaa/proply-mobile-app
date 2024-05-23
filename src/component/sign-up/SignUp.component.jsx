@@ -1,22 +1,24 @@
 import { StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from "@hookform/resolvers/yup"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+import * as yup from "yup"
+import { useNavigation } from '@react-navigation/native'
 import { Button, TextInput } from 'react-native-paper'
 import { FontFamily } from '../../../GlobalStyles'
-import * as yup from "yup";
-import { Controller, useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigation } from '@react-navigation/native';
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const loginFormSchema = yup
+const signUpFormSchema = yup
                         .object({
                             email: yup.string().email("Email not valid").required("Email is Required"),
-                            password: yup.string().min(8, "Password minimum 8 characters").required("Password must be filled")
+                            password: yup.string().min(8, "Password minimum 8 characters").required("Password must be filled"),
+                            confirmPassword: yup.string().oneOf([yup.ref('password'), null], "Passwords must match").required("Password must be filled")
                         }).required();
 
-const Login = () => {
+const SignUp = () => {
   const navigation = useNavigation()
   const [isShowPassword, setIsShowPassword] = useState(false)
+  const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false)
   const {
     control,
     handleSubmit,
@@ -26,9 +28,10 @@ const Login = () => {
   } = useForm({
     defaultValues: {
       email: "",
-      password: ""
+      password: "",
+      confirmPassword: ""
     },
-    resolver: yupResolver(loginFormSchema)
+    resolver: yupResolver(signUpFormSchema)
   })
 
   const onSubmit = () => {
@@ -37,15 +40,7 @@ const Login = () => {
       "getFieldState('email')": getFieldState("email"),
     });
     const { email, password } = getValues();
-    if (email === 'admin@example.com' && password === 'password') {
-      navigation.navigate("BottomTab", { email, password, isFromLogin: true });
-    } else {
-      navigation.navigate("BottomTabEmployee", { email, password, isFromLogin: true });
-    }
-  }
-
-  const handleSignUp = () => {
-    navigation.navigate('SignUp')
+    navigation.navigate("SignUpSuccess", { email, password, isFromLogin: true });
   }
 
   return (
@@ -53,7 +48,7 @@ const Login = () => {
     <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
-          <Text style={styles.welcomeText}>Welcome Back!</Text>
+          <Text style={styles.createAccountText}>Create an Account</Text>
         </View>
         <View style={styles.emailContainer}>
         <Controller
@@ -146,27 +141,74 @@ const Login = () => {
           </Text>
         )}
         </View>
+        <View style={styles.passwordContainer}>
+        <Controller
+          control={control}
+          rules={{
+              required: true
+          }}
+          render={({ field: {onChange, onBlur, value} }) => (
+            <TextInput
+            label="Confirm Password"
+            value={value}
+            onChangeText={onChange}
+            mode="outlined"
+            style={styles.passwordText}
+            activeOutlineColor='#4D869C'
+            outlineStyle={{borderRadius: 10, borderColor: '#626262'}}
+            onBlur={onBlur}
+            secureTextEntry={!isShowConfirmPassword}
+            left={
+              <TextInput.Icon
+                icon={() => (
+                  <MaterialCommunityIcons
+                    name={'onepassword'}
+                    size={20}
+                    style={styles.icon}
+                  />
+                )}
+                onPress={() => {}}
+              />
+            }
+          />
+          )}
+        name="confirmPassword"
+        />
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={{
+          position: 'absolute',
+          right: 20,
+          top: 25
+        }}
+        onPress={() => setIsShowConfirmPassword(!isShowConfirmPassword)}
+            >
+              <MaterialCommunityIcons
+                name={isShowPassword ? "eye" : "eye-off"}
+                size={20}
+              />
+        </TouchableOpacity>
+        {errors.confirmPassword && (
+          <Text style={styles.errors}>
+          {errors.confirmPassword.message}
+          </Text>
+        )}
+        </View>
         <View style={styles.loginButtonContainer}>
           <Button 
           mode="contained" 
           onPress={handleSubmit(onSubmit)}
           style={styles.loginButton}
           >
-            <Text style={styles.loginButtonText}>Login</Text>
+            <Text style={styles.loginButtonText}>Sign Up</Text>
           </Button>
-        </View>
-        <View style={styles.dontHaveContainer}>
-          <Text style={styles.dontHaveText1}>Dont have an account? </Text>
-          <TouchableOpacity activeOpacity={0.6} onPress={handleSignUp}>
-            <Text style={styles.dontHaveText2}>Sign Up</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </>
   )
 }
 
-export default Login
+export default SignUp
 
 const styles = StyleSheet.create({
   container: {
@@ -178,9 +220,9 @@ const styles = StyleSheet.create({
     marginRight: 100,
     marginTop: 30
   },
-  welcomeText: {
+  createAccountText: {
     fontFamily: FontFamily.plusJakartaSansBold,
-    fontSize: 50
+    fontSize: 36
   },
   emailContainer: {
     marginHorizontal: 30,
@@ -195,6 +237,7 @@ const styles = StyleSheet.create({
   passwordContainer: {
     marginHorizontal: 30,
     marginTop: 25,
+    justifyContent: 'center'
   },
   passwordText: {
     fontSize: 15,
