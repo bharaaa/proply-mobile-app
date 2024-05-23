@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const CreateRequestMoney = () => {
+const CreateRequestFunds = () => {
   return (
     <View>
       <Text>CreateRequestMoney</Text>
@@ -9,6 +9,6 @@ const CreateRequestMoney = () => {
   )
 }
 
-export default CreateRequestMoney
+export default CreateRequestFunds
 
 const styles = StyleSheet.create({})

@@ -15,8 +15,8 @@ import BottomTabEmployee from '../component/bottom-navigation/BottomTabEmployee.
 import ProcurementList from '../component/manager/procurement-list/ProcurementList.component'
 import ProcurementListDetail from '../component/manager/procurement-list/ProcurementListDetail.component'
 import CreateRequest from '../component/employee/create-request/CreateRequest'
-import CreateRequestMoney from '../component/employee/create-request/CreateRequestMoney'
-import CreateRequestItems from '../component/employee/create-request/CreateRequestItems'
+import CreateRequestFunds from '../component/employee/create-request/CreateRequestFunds'
+import CreateRequestGoods from '../component/employee/create-request/CreateRequestGoods'
 
 const Stack = createNativeStackNavigator()
 
@@ -41,8 +41,8 @@ const route = () => {
             <Stack.Screen name='ProcurementList' options={{headerShown: false}} component={ProcurementList}/>
             <Stack.Screen name='ProcurementListDetail' options={{headerShown: false}} component={ProcurementListDetail}/>
             <Stack.Screen name='CreateRequest' options={{headerShown: false}} component={CreateRequest}/>
-            <Stack.Screen name='CreateRequestItems' options={{headerShown: false}} component={CreateRequestItems}/>
-            <Stack.Screen name='CreateRequestMoney' options={{headerShown: false}} component={CreateRequestMoney}/>
+            <Stack.Screen name='CreateRequestGoods' options={{headerShown: false}} component={CreateRequestGoods}/>
+            <Stack.Screen name='CreateRequestFunds' options={{headerShown: false}} component={CreateRequestFunds}/>
         </Stack.Navigator>
     </NavigationContainer>
   )

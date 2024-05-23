@@ -5,11 +5,11 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { FontFamily } from '../../../../GlobalStyles';
 
 const data = [
-  { label: 'Items', value: '1' },
-  { label: 'Money', value: '2' },
+  { label: 'Goods', value: '1' },
+  { label: 'Funds', value: '2' },
 ];
 
-const DropdownPicker = ({ onValueChange }) => {
+const DropdownProcurementCategory = ({ onValueChange }) => {
   const [value, setValue] = useState(null);
 
   const renderItem = item => (
@@ -35,7 +35,7 @@ const DropdownPicker = ({ onValueChange }) => {
       iconStyle={styles.iconStyle}
       data={data}
       search
-      maxHeight={300}
+      maxHeight={200}
       labelField="label"
       valueField="value"
       placeholder="Select item"
@@ -43,7 +43,7 @@ const DropdownPicker = ({ onValueChange }) => {
       value={value}
       onChange={item => {
         setValue(item.value);
-        onValueChange(item.value); // Pass the selected value to the parent component
+        onValueChange(item.value);
       }}
       renderLeftIcon={() => (
         <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
@@ -53,7 +53,7 @@ const DropdownPicker = ({ onValueChange }) => {
   );
 };
 
-export default DropdownPicker;
+export default DropdownProcurementCategory;
 
 const styles = StyleSheet.create({
   dropdown: {

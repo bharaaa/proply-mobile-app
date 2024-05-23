@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Appbar, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { FontFamily } from '../../../../GlobalStyles';
-import DropdownPicker from './DropdownPicker';
+import DropdownProcurementCategory from './DropdownProcurementCategory';
 
 const CreateRequest = () => {
   const navigation = useNavigation();
@@ -15,9 +15,9 @@ const CreateRequest = () => {
 
   const handleNext = () => {
     if (dropdownValue === '1') {
-      navigation.navigate('CreateRequestItems');
+      navigation.navigate('CreateRequestGoods');
     } else if (dropdownValue === '2') {
-      navigation.navigate('CreateRequestMoney');
+      navigation.navigate('CreateRequestFunds');
     } else {
       console.log('Please select a value from the dropdown');
     }
@@ -32,7 +32,7 @@ const CreateRequest = () => {
           <Appbar.Content title="Create Request" titleStyle={styles.title} />
         </Appbar.Header>
         <Text style={styles.formLabel}>Procurement Category</Text>
-        <DropdownPicker onValueChange={setDropdownValue} />
+        <DropdownProcurementCategory onValueChange={setDropdownValue} />
         <View style={styles.buttonContainer}>
           <Button mode="contained" onPress={handleNext} style={styles.button}>
             <Text style={styles.buttonText}>Next</Text>
