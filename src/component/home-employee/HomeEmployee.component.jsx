@@ -3,9 +3,11 @@ import React from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import { FontFamily } from '../../../GlobalStyles'
 import { Button } from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native'
 
 const HomeEmployee = () => {
   const getCurrentHour = new Date().getHours()
+  const navigation = useNavigation()
   let hello
 
   if ( getCurrentHour >= 5 &&  getCurrentHour <= 12 ) {
@@ -16,6 +18,10 @@ const HomeEmployee = () => {
   }
   else {
     hello = "Good Evening!"
+  }
+
+  const handleCreateRequest = () => {
+    navigation.navigate('CreateRequest')
   }
 
   return (
@@ -32,7 +38,7 @@ const HomeEmployee = () => {
           <Button 
           mode="contained" 
           style={styles.listButton}
-          onPress={() => console.log('Pressed')}
+          onPress={handleCreateRequest}
           >
             <Text style={styles.listButtonText}>Create Request</Text>
           </Button>
