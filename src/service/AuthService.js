@@ -4,7 +4,7 @@ const AuthService = () => {
   const login = async (payload) => {
     try {
       console.log(payload);
-      const {data} = await axios.post("https://proply.as.r.appspot.com/api/v1/auth/login", payload);
+      const {data} = await axios.post("https://proply-backend-jjwesamxia-as.a.run.app/api/v1/auth/login", payload);
       console.log(data);
       
       if (data.statusCode === 200) {
