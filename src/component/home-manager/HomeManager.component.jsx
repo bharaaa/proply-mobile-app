@@ -24,6 +24,10 @@ const HomeManager = () => {
     navigation.navigate('ProcurementList')
   }
 
+  const handleProcurementHistory = () => {
+    navigation.navigate('ProcurementHistory')
+  }
+
   return (
     <>
     <StatusBar barStyle="default" backgroundColor="#313131" />
@@ -45,7 +49,7 @@ const HomeManager = () => {
           <Button 
           mode="contained" 
           style={styles.listButton}
-          onPress={() => console.log('Pressed')}
+          onPress={handleProcurementHistory}
           >
             <Text style={styles.listButtonText}>Procurement History</Text>
           </Button>
