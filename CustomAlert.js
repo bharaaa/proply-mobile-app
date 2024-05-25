@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import { FontFamily } from './GlobalStyles';
+import { Button } from 'react-native-paper';
 
 const CustomAlert = ({ isVisible, onClose, title, message }) => {
   return (
@@ -10,9 +11,15 @@ const CustomAlert = ({ isVisible, onClose, title, message }) => {
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.message}>{message}</Text>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={onClose} style={styles.button}>
+          {/* <TouchableOpacity onPress={onClose} style={styles.button}>
             <Text style={styles.buttonText}>OK</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <Button
+          style={styles.button}
+          onPress={onClose}
+          >
+            <Text style={styles.buttonText}>OK</Text>
+          </Button>
         </View>
       </View>
     </Modal>
@@ -43,12 +50,14 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#4D869C',
-    padding: 10,
     borderRadius: 5,
+    width: 80,
   },
   buttonText: {
     color: 'white',
     fontSize: 16,
+    fontFamily: FontFamily.soraRegular,
+    textAlign: 'center'
   },
 });
 
