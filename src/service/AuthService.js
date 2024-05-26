@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axiosInstance from './AxiosInstance';
 
 const AuthService = () => {
   const login = async (payload) => {
     try {
       console.log(payload);
-      const response = await axios.post("https://proply-backend-jjwesamxia-as.a.run.app/api/v1/auth/login", payload);
+      const response = await axiosInstance.post("auth/login", payload);
       console.log(response.data);
       
       if (response.data.statusCode === 200) {
