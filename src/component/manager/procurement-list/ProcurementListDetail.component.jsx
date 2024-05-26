@@ -48,12 +48,6 @@ const ProcurementListDetail = () => {
       </View>
       <View style={styles.itemContainer}>
         <Text style={styles.itemText}>Item</Text>
-        <FlatList
-        data={procurements}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.procuremendId}
-        showsVerticalScrollIndicator= {false}
-        />
       </View>
       <View style={styles.titleContainer}>
         <Text style={styles.statusText}>Status: {item.procurementDetailResponses.status}</Text>
