@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, Text, View } from 'react-native'
+import { FlatList, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { FontFamily } from '../../../../GlobalStyles'
 import { Appbar, Button } from 'react-native-paper'
@@ -13,6 +13,20 @@ const ProcurementListDetail = () => {
     navigation.goBack()
   }
 
+  const renderItem = ({ item }) => (
+    <Button 
+    mode="contained" 
+    key={item.procurementDetailResponses.procurementDetailId}
+    onPress={() => {
+      const { onPress, ...itemWithoutOnPress } = item;
+      navigation.navigate("ProcurementListDetail", { item: itemWithoutOnPress });
+    }}
+    style={styles.button}
+    >
+      <Text style={styles.buttonText}>{item.procurementDetailResponses.procurementDetailId} Division, {item.userResponse.fullName}</Text>
+    </Button>
+  );
+
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
@@ -23,13 +37,26 @@ const ProcurementListDetail = () => {
       <Appbar.BackAction onPress={handleHomeManager} />
       <Appbar.Content title="Procurement Detail" titleStyle={styles.title}/>
     </Appbar.Header>
+    <ScrollView showsVerticalScrollIndicator= {false}>      
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>{item.title}</Text>
+        <Text style={styles.titleText}>{item.userResponse.fullName}</Text>
       </View>
       <View style={styles.divider}></View>
       <View style={styles.titleContainer}>
-        <Text style={styles.statusText}>Status: {item.status}</Text>
+        <Text style={styles.statusText}>{item.procurementCategoryResponse.name}</Text>
+      </View>
+      <View style={styles.itemContainer}>
+        <Text style={styles.itemText}>Item</Text>
+        <FlatList
+        data={procurements}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.procuremendId}
+        showsVerticalScrollIndicator= {false}
+        />
+      </View>
+      <View style={styles.titleContainer}>
+        <Text style={styles.statusText}>Status: {item.procurementDetailResponses.status}</Text>
       </View>
       <View style={{height: 400}}></View>
       <View style={styles.buttonContainer}>
@@ -51,6 +78,7 @@ const ProcurementListDetail = () => {
           </Button>
       </View>
     </View>
+    </ScrollView>
     </>
   );
 }
@@ -71,7 +99,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   titleContainer: {
-    height: 60,
+    height: 40,
     justifyContent: 'center',
     marginHorizontal: 30
   },
@@ -91,7 +119,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   buttonContainer: {
-    marginTop: 20,
+    marginVertical: 10,
     marginHorizontal: 30,
     justifyContent: 'center'
   },
@@ -111,4 +139,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: FontFamily.soraMedium
   },
+  itemContainer: {
+    backgroundColor: 'cyan',
+    height: 70,
+  },
+  itemText: {
+    marginHorizontal: 30,
+    fontFamily: FontFamily.soraRegular
+  }
 })

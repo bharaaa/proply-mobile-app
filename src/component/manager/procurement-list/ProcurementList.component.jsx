@@ -1,45 +1,38 @@
 import { FlatList, StatusBar, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FontFamily } from '../../../../GlobalStyles'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { Appbar, Button } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
-
-const procurementRequestData = [
-  { id: '1', title: 'List 1', description: 'Description for List 1', status: 'Pending', onPress: () => console.log('Notification 1 Pressed') },
-  { id: '2', title: 'List 2', description: 'Description for List 2', status: 'Pending', onPress: () => console.log('Notification 2 Pressed') },
-  { id: '3', title: 'List 3', description: 'Description for List 3', status: 'Pending', onPress: () => console.log('Notification 3 Pressed') },
-  { id: '4', title: 'List 4', description: 'Description for List 4', status: 'Pending', onPress: () => console.log('Notification 4 Pressed') },
-  { id: '5', title: 'List 5', description: 'Description for List 5', status: 'Pending', onPress: () => console.log('Notification 5 Pressed') },
-  { id: '6', title: 'List 6', description: 'Description for List 6', status: 'Pending', onPress: () => console.log('Notification 6 Pressed') },
-  { id: '7', title: 'List 7', description: 'Description for List 7', status: 'Pending', onPress: () => console.log('Notification 7 Pressed') },
-  { id: '8', title: 'List 8', description: 'Description for List 8', status: 'Pending', onPress: () => console.log('Notification 8 Pressed') },
-  { id: '9', title: 'List 1', description: 'Description for List 1', status: 'Pending', onPress: () => console.log('Notification 1 Pressed') },
-  { id: '10', title: 'List 2', description: 'Description for List 2', status: 'Pending', onPress: () => console.log('Notification 2 Pressed') },
-  { id: '11', title: 'List 3', description: 'Description for List 3', status: 'Pending', onPress: () => console.log('Notification 3 Pressed') },
-  { id: '12', title: 'List 4', description: 'Description for List 4', status: 'Pending', onPress: () => console.log('Notification 4 Pressed') },
-  { id: '13', title: 'List 5', description: 'Description for List 5', status: 'Pending', onPress: () => console.log('Notification 5 Pressed') },
-  { id: '14', title: 'List 6', description: 'Description for List 6', status: 'Pending', onPress: () => console.log('Notification 6 Pressed') },
-];
+import { useDispatch, useSelector } from 'react-redux'
+import { getProcurementsAction } from '../../../app/feature/ProcurementListSlice'
 
 const ProcurementList = () => {
+  const dispatch = useDispatch()
   const navigation = useNavigation()
 
   const handleHomeManager = () => {
     navigation.goBack()
   }
 
+  const {procurements} = useSelector((state) => state.procurements)
+
+  useEffect(() => {
+    dispatch(getProcurementsAction())
+    console.log(procurements)
+  }, [dispatch])
+
   const renderItem = ({ item }) => (
     <Button 
     mode="contained" 
-    key={item.id}
+    key={item.procurementId}
     onPress={() => {
       const { onPress, ...itemWithoutOnPress } = item;
       navigation.navigate("ProcurementListDetail", { item: itemWithoutOnPress });
     }}
     style={styles.button}
     >
-      <Text style={styles.buttonText}>{item.title}</Text>
+      <Text style={styles.buttonText}>{item.userResponse.divisionResponse.name} Division, {item.userResponse.fullName}</Text>
     </Button>
   );
 
@@ -58,9 +51,9 @@ const ProcurementList = () => {
       <Text style={styles.tipsText}>Manage all procurement request, 
       here you can see a list of request from each employee</Text>
         <FlatList
-        data={procurementRequestData}
+        data={procurements}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.procuremendId}
         showsVerticalScrollIndicator= {false}
         />
       </View>
