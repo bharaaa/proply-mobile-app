@@ -11,6 +11,8 @@ import AuthService from '../../service/AuthService';
 import CustomAlert from '../../../CustomAlert';
 import { jwtDecode } from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { loginAction } from '../../app/feature/AuthSlice';
 
 const loginFormSchema = yup
                         .object({
@@ -39,15 +41,16 @@ const Login = () => {
   const [alertMessage, setAlertMessage] = useState('');
 
   const service = AuthService();
+  const dispatch = useDispatch()
 
   const onSubmit = async () => {
     try {
       const { email, password } = getValues();
 
-      const res = await service.login({ email, password });
+      const res = await dispatch(loginAction({email, password}))
       console.log(res);
 
-      const token = res.data.token;
+      const token = res.payload.data.token;
       await AsyncStorage.setItem('token', token);
 
       const decodedToken = jwtDecode(token);
