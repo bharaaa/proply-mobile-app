@@ -9,6 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AuthService from '../../service/AuthService';
 import CustomAlert from '../../../CustomAlert';
+import { jwtDecode } from 'jwt-decode';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const loginFormSchema = yup
                         .object({
@@ -45,12 +47,22 @@ const Login = () => {
       const res = await service.login({ email, password });
       console.log(res);
 
-      // Save token to async storage or any other necessary action
-      // asyncStorage.setItem('token', res.data.token).then(() => {
-      //   console.log("Token stored successfully!");
-      // });
+      const token = res.data.token;
+      await AsyncStorage.setItem('token', token);
 
-      navigation.navigate("BottomTab", { email, password, isFromLogin: true });
+      const decodedToken = jwtDecode(token);
+      const role = decodedToken.role;
+      console.log("Role", role)
+
+      if (role === 'ROLE_ADMIN') {
+        navigation.navigate('BottomTab');
+      }
+      else if (role === 'ROLE_MANAGER') {
+        navigation.navigate('BottomTabEmployee');
+      }
+      else if (role === 'ROLE_EMPLOYEE') {
+        navigation.navigate('BottomTabEmployee');
+      }
     } catch (err) {
       setAlertMessage("Invalid Email/Password");
       setAlertVisible(true);
