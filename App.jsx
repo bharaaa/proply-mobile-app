@@ -7,6 +7,8 @@ import { useFonts } from "expo-font";
 import { PaperProvider } from 'react-native-paper';
 import AppPaperProvider from './src/component/AppPaperProvider';
 import BottomTab from './src/component/bottom-navigation/BottomTab.component';
+import { Provider } from "react-redux";
+import store from './src/app/store';
 
 export default function App() {
   const [isShowSplash, setIsShowSplash] = useState(true)
@@ -40,10 +42,12 @@ export default function App() {
 
   return (
     <>
-    {isShowSplash ? (<SplashScreenView/>) : (
-    <AppPaperProvider>
-      <Route/>
-    </AppPaperProvider>)}
+    <Provider store={store}>
+      {isShowSplash ? (<SplashScreenView/>) : (
+      <AppPaperProvider>
+        <Route/>
+      </AppPaperProvider>)}
+    </Provider>
     </>
   );
 }
