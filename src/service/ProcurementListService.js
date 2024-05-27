@@ -17,9 +17,12 @@ const ProcurementListService = () => {
     }
   };
 
-  const approve = async (id) => {
+  const approve = async (id, detailId) => {
     try {
-      const response = await axiosInstance.put('procurements/approve', { procurementId: id });
+      const response = await axiosInstance.put('procurements/approve', {
+        procurementId: id,
+        procurementDetailId: detailId
+      });
       console.log(response.data);
   
       if (response.data.statusCode === 200) {
@@ -33,9 +36,12 @@ const ProcurementListService = () => {
     }
   };
 
-  const reject = async (id) => {
+  const reject = async (id, detailId) => {
     try {
-      const response = await axiosInstance.put('procurements/reject', { procurementId: id });
+      const response = await axiosInstance.put('procurements/reject', {
+        procurementId: id,
+        procurementDetailId: detailId
+      });
       console.log(response.data);
   
       if (response.data.statusCode === 200) {

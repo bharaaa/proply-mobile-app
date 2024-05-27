@@ -17,13 +17,19 @@ const ProcurementListDetail = () => {
   }
 
   const handleApproved = () => {
-    dispatch(approveProcurementsAction(item.procurementId))
-    navigation.navigate('ProcurementListApproved');
+    const procurementId = item.procurementId
+    const procurementDetailId = item.procurementDetailResponses[1].procurementDetailId
+    dispatch(approveProcurementsAction({procurementId, procurementDetailId}))
+    // navigation.navigate('ProcurementListApproved');
+    console.log("Approved")
   };
 
   const handleRejected = () => {
-    dispatch(rejectProcurementsAction(item.procurementId))
-    navigation.navigate('ProcurementListRejected')
+    const procurementId = item.procurementId
+    const procurementDetailId = item.procurementDetailResponses[0].procurementDetailId
+    dispatch(rejectProcurementsAction({procurementId, procurementDetailId}))
+    // navigation.navigate('ProcurementListRejected')
+    console.log("Rejected")
   }
 
   const { procurements } = useSelector((state) => state.procurements);
@@ -35,11 +41,19 @@ const ProcurementListDetail = () => {
   const renderDetailItem = ({ item }) => (
     <View style={styles.detailContainer}>
       <Text style={styles.detailText}>
-        Item: {item.itemResponse.name}, Quantity: {item.quantity} , Status: {item.status}
+        Item: {item.itemResponse.name}, Quantity: {item.quantity}
       </Text>
       <Text style={styles.detailText}>
         Notes: {item.notes}
       </Text>
+      <View style={styles.buttonContainer}>
+          <Button mode="contained" onPress={handleApproved} style={styles.button}>
+            <Text style={styles.buttonText}>Approve</Text>
+          </Button>
+          <Button mode="contained" onPress={handleRejected} style={styles.buttonReject}>
+            <Text style={styles.buttonText}>Reject</Text>
+          </Button>
+      </View>
     </View>
   );
 
@@ -71,16 +85,6 @@ const ProcurementListDetail = () => {
           contentContainerStyle={styles.listContainer}
           style= {styles.listDetail}
         />
-        <View style={styles.buttonContainer}>
-          <Button mode="contained" onPress={handleApproved} style={styles.button}>
-            <Text style={styles.buttonText}>Approve</Text>
-          </Button>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button mode="contained" onPress={handleRejected} style={styles.buttonReject}>
-            <Text style={styles.buttonText}>Reject</Text>
-          </Button>
-        </View>
       </View>
     </>
   );
@@ -124,7 +128,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginVertical: 10,
     marginHorizontal: 30,
-    justifyContent: 'center'
+    flexDirection: 'row',
+    justifyContent: 'space-around'
   },
   button: {
     backgroundColor: '#4D869C',
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 80
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: FontFamily.soraMedium
   },
   itemContainer: {
@@ -158,7 +163,8 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   detailText: {
-    fontFamily: FontFamily.soraRegular
+    fontFamily: FontFamily.soraRegular,
+    fontSize: 15
   },
   detailContainer: {
   },

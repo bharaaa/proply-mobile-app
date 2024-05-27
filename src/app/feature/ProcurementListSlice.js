@@ -20,20 +20,21 @@ export const getProcurementsAction = createAsyncThunk(
 
 export const approveProcurementsAction = createAsyncThunk(
     'procurements/approve',
-    async (procurementId, { rejectWithValue }) => {
+    async ({ procurementId, procurementDetailId }, { rejectWithValue }) => {
       try {
-        return await approve(procurementId);
+        return await approve(procurementId, procurementDetailId);
       } catch (e) {
         return rejectWithValue(e.message);
       }
     }
-);
+  );
+  
 
 export const rejectProcurementsAction = createAsyncThunk(
     'procurements/reject',
-    async (procurementId, { rejectWithValue }) => {
+    async ({ procurementId, procurementDetailId }, { rejectWithValue }) => {
       try {
-        return await reject(procurementId);
+        return await reject(procurementId, procurementDetailId);
       } catch (e) {
         return rejectWithValue(e.message);
       }
