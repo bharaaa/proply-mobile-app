@@ -9,6 +9,10 @@ import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AuthService from '../../service/AuthService';
 import CustomAlert from '../../../CustomAlert';
+import { jwtDecode } from 'jwt-decode';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { loginAction } from '../../app/feature/AuthSlice';
 
 const loginFormSchema = yup
                         .object({
@@ -37,20 +41,31 @@ const Login = () => {
   const [alertMessage, setAlertMessage] = useState('');
 
   const service = AuthService();
+  const dispatch = useDispatch()
 
   const onSubmit = async () => {
     try {
       const { email, password } = getValues();
 
-      const res = await service.login({ email, password });
+      const res = await dispatch(loginAction({email, password}))
       console.log(res);
 
-      // Save token to async storage or any other necessary action
-      // asyncStorage.setItem('token', res.data.token).then(() => {
-      //   console.log("Token stored successfully!");
-      // });
+      const token = res.payload.data.token;
+      await AsyncStorage.setItem('token', token);
 
-      navigation.navigate("BottomTab", { email, password, isFromLogin: true });
+      const decodedToken = jwtDecode(token);
+      const role = decodedToken.role;
+      console.log("Role", role)
+
+      if (role === 'ROLE_ADMIN') {
+        navigation.navigate('BottomTab');
+      }
+      else if (role === 'ROLE_MANAGER') {
+        navigation.navigate('BottomTabEmployee');
+      }
+      else if (role === 'ROLE_EMPLOYEE') {
+        navigation.navigate('BottomTabEmployee');
+      }
     } catch (err) {
       setAlertMessage("Invalid Email/Password");
       setAlertVisible(true);
