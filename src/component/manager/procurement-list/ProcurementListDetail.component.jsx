@@ -4,7 +4,7 @@ import { FontFamily } from '../../../../GlobalStyles'
 import { Appbar, Button } from 'react-native-paper'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
-import { approveProcurementsAction } from '../../../app/feature/ProcurementListSlice'
+import { approveProcurementsAction, rejectProcurementsAction } from '../../../app/feature/ProcurementListSlice'
 
 const ProcurementListDetail = () => {
   const dispatch = useDispatch()
@@ -17,11 +17,12 @@ const ProcurementListDetail = () => {
   }
 
   const handleApproved = () => {
-    dispatch(approveProcurementsAction(item.procurementId));
+    dispatch(approveProcurementsAction(item.procurementId))
     navigation.navigate('ProcurementListApproved');
   };
 
   const handleRejected = () => {
+    dispatch(rejectProcurementsAction(item.procurementId))
     navigation.navigate('ProcurementListRejected')
   }
 
