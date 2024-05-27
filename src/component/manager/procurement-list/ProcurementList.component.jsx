@@ -53,7 +53,7 @@ const ProcurementList = () => {
         <FlatList
         data={procurements}
         renderItem={renderItem}
-        keyExtractor={(item) => item.procuremendId}
+        keyExtractor={(item) => item.procurementId}
         showsVerticalScrollIndicator= {false}
         />
       </View>

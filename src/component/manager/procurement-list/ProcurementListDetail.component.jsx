@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { FlatList, Image, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { FontFamily } from '../../../../GlobalStyles'
 import { Appbar, Button } from 'react-native-paper'
@@ -13,66 +13,64 @@ const ProcurementListDetail = () => {
     navigation.goBack()
   }
 
-  const renderItem = ({ item }) => (
-    <Button 
-    mode="contained" 
-    key={item.procurementDetailResponses.procurementDetailId}
-    onPress={() => {
-      const { onPress, ...itemWithoutOnPress } = item;
-      navigation.navigate("ProcurementListDetail", { item: itemWithoutOnPress });
-    }}
-    style={styles.button}
-    >
-      <Text style={styles.buttonText}>{item.procurementDetailResponses.procurementDetailId} Division, {item.userResponse.fullName}</Text>
-    </Button>
+  const handleApproved = () => {
+    navigation.navigate('ProcurementListApproved')
+  }
+
+  const handleRejected = () => {
+    navigation.navigate('ProcurementListRejected')
+  }
+
+  const renderDetailItem = ({ item }) => (
+    <View style={styles.detailContainer}>
+      <Text style={styles.detailText}>
+        Item: {item.itemResponse.name}, Quantity: {item.quantity} , Status: {item.status}
+      </Text>
+      <Text style={styles.detailText}>
+        Notes: {item.notes}
+      </Text>
+    </View>
   );
 
   return (
     <>
-    <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
-    <Appbar.Header
-    mode='center-aligned'
-    style={styles.header}
-    >
-      <Appbar.BackAction onPress={handleHomeManager} />
-      <Appbar.Content title="Procurement Detail" titleStyle={styles.title}/>
-    </Appbar.Header>
-    <ScrollView showsVerticalScrollIndicator= {false}>      
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>{item.userResponse.fullName}</Text>
-      </View>
-      <View style={styles.divider}></View>
-      <View style={styles.titleContainer}>
-        <Text style={styles.statusText}>{item.procurementCategoryResponse.name}</Text>
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>Item</Text>
-      </View>
-      <View style={styles.titleContainer}>
-        <Text style={styles.statusText}>Status: {item.procurementDetailResponses.status}</Text>
-      </View>
-      <View style={{height: 400}}></View>
-      <View style={styles.buttonContainer}>
-          <Button 
-          mode="contained" 
-          onPress={() => console.log("Approve Clicked")}
-          style={styles.button}
-          >
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+      <Appbar.Header mode='center-aligned' style={styles.header}>
+        <Appbar.BackAction onPress={handleHomeManager} />
+        <Appbar.Content title="Procurement Detail" titleStyle={styles.title} />
+      </Appbar.Header>
+      <View style={styles.container}>
+        <View>
+          <Image source={{ uri: item.userResponse.profileImageUrl }} style={styles.imageContainer}/>
+        </View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleText}>{item.userResponse.fullName}</Text>
+        </View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.divisionText}>{item.userResponse.divisionResponse.name} Division</Text>
+        </View>
+        <View style={styles.divider}></View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.statusText}>{item.procurementCategoryResponse.name}</Text>
+        </View>
+        <FlatList
+          data={item.procurementDetailResponses}
+          renderItem={renderDetailItem}
+          keyExtractor={(detail) => detail.procurementDetailId}
+          contentContainerStyle={styles.listContainer}
+          style= {styles.listDetail}
+        />
+        <View style={styles.buttonContainer}>
+          <Button mode="contained" onPress={handleApproved} style={styles.button}>
             <Text style={styles.buttonText}>Approve</Text>
           </Button>
-      </View>
-      <View style={styles.buttonContainer}>
-          <Button 
-          mode="contained" 
-          onPress={() => console.log("Reject Clicked")}
-          style={styles.buttonReject}
-          >
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button mode="contained" onPress={handleRejected} style={styles.buttonReject}>
             <Text style={styles.buttonText}>Reject</Text>
           </Button>
+        </View>
       </View>
-    </View>
-    </ScrollView>
     </>
   );
 }
@@ -140,5 +138,23 @@ const styles = StyleSheet.create({
   itemText: {
     marginHorizontal: 30,
     fontFamily: FontFamily.soraRegular
+  },
+  listDetail: {
+    marginHorizontal: 30
+  },
+  divisionText: {
+    fontFamily: FontFamily.soraMedium,
+    fontSize: 16
+  },
+  detailText: {
+    fontFamily: FontFamily.soraRegular
+  },
+  detailContainer: {
+  },
+  imageContainer: {
+    height: 80,
+    width: 80,
+    borderRadius: 50,
+    marginHorizontal: 30
   }
 })

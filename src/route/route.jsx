@@ -19,6 +19,8 @@ import CreateRequestFunds from "../component/employee/create-request/CreateReque
 import CreateRequestGoods from "../component/employee/create-request/CreateRequestGoods";
 import ProcurementHistory from "../component/manager/procurement-history/ProcurementHistory.component";
 import ProcurementHistoryDetail from "../component/manager/procurement-history/ProcurementHistoryDetail.component";
+import ProcurementListApproved from "../component/manager/procurement-list/ProcurementListApproved.component";
+import ProcurementListRejected from "../component/manager/procurement-list/ProcurementListRejected.component";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +28,7 @@ const route = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="BottomTab"
+        initialRouteName="Login"
         screenOptions={{
           gestureEnabled: true,
           gestureDirection: "horizontal",
@@ -97,6 +99,16 @@ const route = () => {
           name="CreateRequestFunds"
           options={{ headerShown: false }}
           component={CreateRequestFunds}
+        />
+		<Stack.Screen
+          name="ProcurementListApproved"
+          options={{ headerShown: false }}
+          component={ProcurementListApproved}
+        />
+		<Stack.Screen
+          name="ProcurementListRejected"
+          options={{ headerShown: false }}
+          component={ProcurementListRejected}
         />
       </Stack.Navigator>
     </NavigationContainer>
