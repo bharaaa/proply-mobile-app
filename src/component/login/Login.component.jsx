@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { Button, TextInput } from 'react-native-paper'
 import { FontFamily } from '../../../GlobalStyles'
@@ -7,11 +7,17 @@ import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AuthService from '../../service/AuthService';
+import CustomAlert from '../../../CustomAlert';
+import { jwtDecode } from 'jwt-decode';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { loginAction } from '../../app/feature/AuthSlice';
 
 const loginFormSchema = yup
                         .object({
                             email: yup.string().email("Email not valid").required("Email is Required"),
-                            password: yup.string().min(8, "Password minimum 8 characters").required("Password must be filled")
+                            password: yup.string().min(5, "Password minimum 5 characters").required("Password must be filled")
                         }).required();
 
 const Login = () => {
@@ -31,13 +37,39 @@ const Login = () => {
     resolver: yupResolver(loginFormSchema)
   })
 
-  const onSubmit = () => {
-    console.log("Debug Form", {
-      "getValues()": getValues(),
-      "getFieldState('email')": getFieldState("email"),
-    });
-    const { email, password } = getValues();
-    navigation.navigate("BottomTab", { email, password, isFromLogin: true });
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const service = AuthService();
+  const dispatch = useDispatch()
+
+  const onSubmit = async () => {
+    try {
+      const { email, password } = getValues();
+
+      const res = await dispatch(loginAction({email, password}))
+      console.log(res);
+
+      const token = res.payload.data.token;
+      await AsyncStorage.setItem('token', token);
+
+      const decodedToken = jwtDecode(token);
+      const role = decodedToken.role;
+      console.log("Role", role)
+
+      if (role === 'ROLE_ADMIN') {
+        navigation.navigate('BottomTab');
+      }
+      else if (role === 'ROLE_MANAGER') {
+        navigation.navigate('BottomTabEmployee');
+      }
+      else if (role === 'ROLE_EMPLOYEE') {
+        navigation.navigate('BottomTabEmployee');
+      }
+    } catch (err) {
+      setAlertMessage("Invalid Email/Password");
+      setAlertVisible(true);
+    }
   }
 
   const handleSignUp = () => {
@@ -150,6 +182,12 @@ const Login = () => {
           >
             <Text style={styles.loginButtonText}>Login</Text>
           </Button>
+          <CustomAlert
+          isVisible={alertVisible}
+          onClose={() => setAlertVisible(false)}
+          title="Login Failed"
+          message={alertMessage}
+          />
         </View>
         <View style={styles.dontHaveContainer}>
           <Text style={styles.dontHaveText1}>Dont have an account? </Text>

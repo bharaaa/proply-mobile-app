@@ -5,9 +5,9 @@ import { FontFamily } from '../../../GlobalStyles'
 import { Button } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 
-const HomeManager = () => {
-  const navigation = useNavigation()
+const HomeEmployee = () => {
   const getCurrentHour = new Date().getHours()
+  const navigation = useNavigation()
   let hello
 
   if ( getCurrentHour >= 5 &&  getCurrentHour <= 12 ) {
@@ -20,12 +20,8 @@ const HomeManager = () => {
     hello = "Good Evening!"
   }
 
-  const handleProcurementList = () => {
-    navigation.navigate('ProcurementList')
-  }
-
-  const handleProcurementHistory = () => {
-    navigation.navigate('ProcurementHistory')
+  const handleCreateRequest = () => {
+    navigation.navigate('CreateRequest')
   }
 
   return (
@@ -42,16 +38,23 @@ const HomeManager = () => {
           <Button 
           mode="contained" 
           style={styles.listButton}
-          onPress={handleProcurementList}
+          onPress={handleCreateRequest}
           >
-            <Text style={styles.listButtonText}>Procurement List</Text>
+            <Text style={styles.listButtonText}>Create Request</Text>
           </Button>
           <Button 
           mode="contained" 
           style={styles.listButton}
-          onPress={handleProcurementHistory}
+          onPress={() => console.log('Pressed')}
           >
-            <Text style={styles.listButtonText}>Procurement History</Text>
+            <Text style={styles.listButtonText}>Track Request</Text>
+          </Button>
+          <Button 
+          mode="contained" 
+          style={styles.listButton}
+          onPress={() => console.log('Pressed')}
+          >
+            <Text style={styles.listButtonText}>Request History</Text>
           </Button>
         </View>
     </View>
@@ -59,7 +62,7 @@ const HomeManager = () => {
   )
 }
 
-export default HomeManager
+export default HomeEmployee
 
 const styles = StyleSheet.create({
     container: {
