@@ -17,8 +17,25 @@ const ProcurementListService = () => {
     }
   };
 
+  const approve = async (id) => {
+    try {
+      const response = await axiosInstance.put('procurements/approve', { procurementId: id });
+      console.log(response.data);
+  
+      if (response.data.statusCode === 200) {
+        return response.data;
+      } else {
+        throw new Error(response.status);
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+  };
+
   return {
-    getAll
+    getAll,
+    approve
   };
 };
 

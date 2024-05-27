@@ -1,10 +1,13 @@
 import { FlatList, Image, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FontFamily } from '../../../../GlobalStyles'
 import { Appbar, Button } from 'react-native-paper'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { useDispatch, useSelector } from 'react-redux'
+import { approveProcurementsAction } from '../../../app/feature/ProcurementListSlice'
 
 const ProcurementListDetail = () => {
+  const dispatch = useDispatch()
   const navigation = useNavigation()
   const route = useRoute();
   const { item } = route.params;
@@ -14,12 +17,19 @@ const ProcurementListDetail = () => {
   }
 
   const handleApproved = () => {
-    navigation.navigate('ProcurementListApproved')
-  }
+    dispatch(approveProcurementsAction(item.procurementId));
+    navigation.navigate('ProcurementListApproved');
+  };
 
   const handleRejected = () => {
     navigation.navigate('ProcurementListRejected')
   }
+
+  const { procurements } = useSelector((state) => state.procurements);
+
+  useEffect(() => {
+    console.log(procurements);
+  }, [procurements]);
 
   const renderDetailItem = ({ item }) => (
     <View style={styles.detailContainer}>
