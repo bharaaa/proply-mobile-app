@@ -1,16 +1,10 @@
 import axiosInstance from "./AxiosInstance";
 
-const ProcurementRequestService = () => {
-  const add = async ({
-    userId,
-    procurementCategoryId,
-    procurementDetailRequests,
-  }) => {
+const UserService = () => {
+  const getByEmail = async (email) => {
     try {
-      const response = await axiosInstance.post("procurements", {
-        userId,
-        procurementCategoryId,
-        procurementDetailRequests,
+      const response = await axiosInstance.post("users/email", {
+        email
       });
       console.log(response.data);
 
@@ -20,14 +14,13 @@ const ProcurementRequestService = () => {
         throw new Error(response.data.message || response.status);
       }
     } catch (error) {
-      console.log(error);
       throw new Error(error.response?.data?.message);
     }
   };
 
   return {
-    add,
+    getByEmail
   };
 };
 
-export default ProcurementRequestService;
+export default UserService

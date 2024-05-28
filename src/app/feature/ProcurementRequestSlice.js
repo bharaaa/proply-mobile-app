@@ -5,11 +5,11 @@ const { add } = ProcurementRequestService();
 
 export const addProcurementsAction = createAsyncThunk(
   "procurements",
-  async (_, { rejectWithValue }) => {
+  async (email, { rejectWithValue }) => {
     try {
-      return await add();
+      return await add(email);
     } catch (e) {
-      const errorMessage = e.response?.data?.message || e.message;
+      const errorMessage = e.message;
       return rejectWithValue(errorMessage);
     }
   }
@@ -21,12 +21,12 @@ const ProcurementRequestSlice = createSlice({
     isLoading: false,
     procurement: {},
     procurements: [],
-    error: null
+    error: null,
   },
   reducers: {
     selectedProcurement: (state, { payload }) => {
       state.procurement = payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -43,7 +43,7 @@ const ProcurementRequestSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       });
-  }
+  },
 });
 
 export const { selectedProcurement } = ProcurementRequestSlice.actions;

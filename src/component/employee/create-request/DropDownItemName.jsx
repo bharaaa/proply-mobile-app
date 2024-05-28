@@ -5,12 +5,11 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { FontFamily } from '../../../../GlobalStyles';
 
 const data = [
-  { label: 'Furniture', value: '1' },
-  { label: 'Stationery', value: '2' },
-  { label: 'Electronic', value: '3' },
+  { label: 'Monitor', value: '1' },
+  { label: 'Projector', value: '2' },
 ];
 
-const DropdownItemCategory = ({ data, onValueChange }) => {
+const DropdownItemName = ({ onValueChange }) => {
   const [value, setValue] = useState(null);
 
   const renderItem = item => (
@@ -54,7 +53,7 @@ const DropdownItemCategory = ({ data, onValueChange }) => {
   );
 };
 
-export default DropdownItemCategory;
+export default DropdownItemName
 
 const styles = StyleSheet.create({
   dropdown: {
