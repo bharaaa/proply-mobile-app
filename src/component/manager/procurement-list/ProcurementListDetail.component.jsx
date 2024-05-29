@@ -63,7 +63,6 @@ const ProcurementListDetail = () => {
     const procurementId = item.procurementId;
     console.log("ID: ", procurementId, "ID Detail", procurementDetailId);
     dispatch(approveProcurementsAction({ procurementId, procurementDetailId }));
-    // navigation.navigate('ProcurementListApproved');
     const updatedStatus = {
       ...approvalStatus,
       [procurementDetailId]: "Approved",
@@ -77,7 +76,6 @@ const ProcurementListDetail = () => {
     const procurementId = item.procurementId;
     console.log("ID: ", procurementId, "ID Detail", procurementDetailId);
     dispatch(rejectProcurementsAction({ procurementId, procurementDetailId }));
-    // navigation.navigate('ProcurementListRejected')
     const updatedStatus = {
       ...approvalStatus,
       [procurementDetailId]: "Rejected",
@@ -105,24 +103,7 @@ const ProcurementListDetail = () => {
           <Text style={styles.statusText}>
             {approvalStatus[item.procurementDetailId]}
           </Text>
-        ) : (
-          <>
-            <Button
-              mode="contained"
-              onPress={() => handleApproved(item.procurementDetailId)}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>Approve</Text>
-            </Button>
-            <Button
-              mode="contained"
-              onPress={() => handleRejected(item.procurementDetailId)}
-              style={styles.buttonReject}
-            >
-              <Text style={styles.buttonText}>Reject</Text>
-            </Button>
-          </>
-        )}
+        ) : null}
       </View>
     </View>
   );
@@ -162,6 +143,31 @@ const ProcurementListDetail = () => {
           contentContainerStyle={styles.listContainer}
           style={styles.listDetail}
         />
+        <View style={styles.buttonContainer}>
+          {!approvalStatus[item.procurementId] && (
+            <>
+              <Button
+                mode="contained"
+                onPress={() => handleApproved(item.procurementId)}
+                style={styles.button}
+              >
+                <Text style={styles.buttonText}>Approve</Text>
+              </Button>
+              <Button
+                mode="contained"
+                onPress={() => handleRejected(item.procurementId)}
+                style={styles.buttonReject}
+              >
+                <Text style={styles.buttonText}>Reject</Text>
+              </Button>
+            </>
+          )}
+          {approvalStatus[item.procurementId] && (
+            <Text style={styles.statusText}>
+              {approvalStatus[item.procurementId]}
+            </Text>
+          )}
+        </View>
       </View>
     </>
   );
