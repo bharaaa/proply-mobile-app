@@ -9,6 +9,9 @@ import { getProcurementsAction } from "../../../app/feature/ProcurementListSlice
 import { getByEmailAction } from "../../../app/feature/UserSlice";
 import { jwtDecode } from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 const ProcurementHistory = () => {
   const dispatch = useDispatch();
@@ -65,24 +68,26 @@ const ProcurementHistory = () => {
     }
   }, [userId, procurements]);
 
-  const renderItem = ({ item }) => (
-    <Button
-      mode="contained"
-      key={item.procurementId}
-      onPress={() => {
-        const { onPress, ...itemWithoutOnPress } = item;
-        navigation.navigate("ProcurementListDetail", {
-          item: itemWithoutOnPress,
-        });
-      }}
-      style={styles.button}
-    >
-      <Text style={styles.buttonText}>
-        {item.userResponse.divisionResponse.name} Division,{" "}
-        {item.userResponse.fullName}
-      </Text>
-    </Button>
-  );
+  const renderItem = ({ item }) => {
+    return (
+      <Button
+        mode="contained"
+        key={item.procurementId}
+        onPress={() => {
+          const { onPress, ...itemWithoutOnPress } = item;
+          navigation.navigate("ProcurementListDetail", {
+            item: itemWithoutOnPress,
+          });
+        }}
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>
+          {item.userResponse.divisionResponse.name} Division,{" "}
+          {item.userResponse.fullName}
+        </Text>
+      </Button>
+    );
+  };
 
   return (
     <>
@@ -165,7 +170,7 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: "left",
     color: "black",
-    fontSize: 16,
+    fontSize: 12,
     fontFamily: FontFamily.soraSemiBold,
   },
   noRequestText: {
