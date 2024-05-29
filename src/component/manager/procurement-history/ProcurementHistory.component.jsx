@@ -103,7 +103,7 @@ const ProcurementHistory = () => {
           </Text>
           {filteredProcurements.length === 0 ? (
             <Text style={styles.noRequestText}>
-              No procurement request from employee
+              No procurement history from employee
             </Text>
           ) : (
             <FlatList
