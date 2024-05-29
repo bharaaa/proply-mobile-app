@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Appbar, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { FontFamily } from '../../../../GlobalStyles';
-import DropdownProcurementCategory from './DropdownProcurementCategory';
 import { useDispatch, useSelector } from 'react-redux';
 import { getByEmailAction } from '../../../app/feature/UserSlice';
 import { loginAction } from '../../../app/feature/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
 import { getProcurementCategoryAction } from '../../../app/feature/ProcurementCategorySlice';
+import DropdownList from './DropdownList';
 
 const CreateRequest = () => {
   const navigation = useNavigation();
@@ -95,7 +95,7 @@ const CreateRequest = () => {
           <Appbar.Content title="Create Request" titleStyle={styles.title} />
         </Appbar.Header>
         <Text style={styles.formLabel}>Procurement Category</Text>
-        <DropdownProcurementCategory data={procurementCategories} onValueChange={handleDropdownChange} />
+        <DropdownList data={procurementCategories} onValueChange={handleDropdownChange} />
         <View style={styles.buttonContainer}>
           <Button mode="contained" onPress={handleNext} style={styles.button}>
             <Text style={styles.buttonText}>Next</Text>

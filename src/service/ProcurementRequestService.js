@@ -5,12 +5,16 @@ const ProcurementRequestService = () => {
     userId,
     procurementCategoryId,
     procurementDetailRequests,
+    approvalRequests,
+    level,
   }) => {
     try {
       const response = await axiosInstance.post("procurements", {
         userId,
         procurementCategoryId,
         procurementDetailRequests,
+        approvalRequests,
+        level,
       });
       console.log(response.data);
 

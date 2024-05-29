@@ -5,9 +5,9 @@ const { add } = ProcurementRequestService();
 
 export const addProcurementsAction = createAsyncThunk(
   "procurements",
-  async (email, { rejectWithValue }) => {
+  async ({ userId, procurementCategoryId, procurementDetailRequests, approvalRequests, level }, { rejectWithValue }) => {
     try {
-      return await add(email);
+      return await add({ userId, procurementCategoryId, procurementDetailRequests, approvalRequests, level });
     } catch (e) {
       const errorMessage = e.message;
       return rejectWithValue(errorMessage);
@@ -35,7 +35,7 @@ const ProcurementRequestSlice = createSlice({
         state.error = null;
       })
       .addCase(addProcurementsAction.fulfilled, (state, { payload }) => {
-        state.procurements.push(payload.data);
+        state.procurements.push(payload);
         console.log("Fulfilled", state.procurements);
         state.isLoading = false;
       })

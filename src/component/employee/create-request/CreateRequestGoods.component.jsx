@@ -12,12 +12,11 @@ import React, { useEffect, useState } from "react";
 import { Appbar, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily } from "../../../../GlobalStyles";
-import DropdownItemCategory from "./DropdownItemCategory";
 import AddButton from "../../../../assets/addbutton.png";
 import { useDispatch } from "react-redux";
 import { getItemCategoryAction } from "../../../app/feature/ItemCategorySlice";
-import DropdownItemName from "./DropDownItemName";
 import { getItemNameAction } from "../../../app/feature/ItemNameSlice";
+import DropdownList from "./DropdownList";
 
 const CreateRequestGoods = ({ route }) => {
   const [categoryDropdownValue, setCategoryDropdownValue] = useState("");
@@ -30,6 +29,7 @@ const CreateRequestGoods = ({ route }) => {
 
   const [items, setItems] = useState([]);
   const [quantity, setQuantity] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -66,7 +66,7 @@ const CreateRequestGoods = ({ route }) => {
           setItemNames(names);
         }
       } catch (error) {
-        console.error("Failed to fetch item categories:", error);
+        console.error("Failed to fetch item name:", error);
       }
     };
 
@@ -145,6 +145,26 @@ const CreateRequestGoods = ({ route }) => {
     };
     setItems([...items, newItem]);
     setQuantity("");
+    setErrorMessage("");
+  };
+
+  const handleSubmit = () => {
+    if (items.length === 0) {
+      setErrorMessage("You must add item first");
+      return;
+    }
+
+    const itemIdQuantityPairs = items.map((item) => ({
+      itemId: item.itemId,
+      quantity: item.quantity,
+    }));
+    console.log(itemIdQuantityPairs)
+    
+    navigation.navigate('UserApproval', {
+      procurementCategoryId: procurementCategoryId,
+      userId: userId,
+      itemIdQuantityPairs: itemIdQuantityPairs
+    });
   };
 
   return (
@@ -156,13 +176,13 @@ const CreateRequestGoods = ({ route }) => {
           <Appbar.Content title="Create Request" titleStyle={styles.title} />
         </Appbar.Header>
         <Text style={styles.formLabel}>Item Category</Text>
-        <DropdownItemCategory
+        <DropdownList
           data={itemCategories}
           onValueChange={handleCategoryDropdownChange}
           value={categoryDropdownValue}
         />
         <Text style={styles.formLabel}>Item Name</Text>
-        <DropdownItemName
+        <DropdownList
           data={itemNames}
           onValueChange={handleNameDropdownChange}
           value={nameDropdownValue}
@@ -179,7 +199,7 @@ const CreateRequestGoods = ({ route }) => {
             />
           </View>
           <View style={styles.tipsText}>
-            <Text style={{ fontFamily: FontFamily.soraRegular }}>
+            <Text style={{ fontFamily: FontFamily.soraRegular, color: 'gray' }}>
               *Insert the quantity of item
             </Text>
           </View>
@@ -188,6 +208,9 @@ const CreateRequestGoods = ({ route }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.divider}></View>
+        {errorMessage ? (
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        ) : null}
         <ScrollView showsVerticalScrollIndicator={false}>
           {items.map((item, index) => (
             <ItemDisplay
@@ -203,10 +226,10 @@ const CreateRequestGoods = ({ route }) => {
         <View style={styles.loginButtonContainer}>
           <Button
             mode="contained"
-            onPress={() => console.log("Clicked")}
+            onPress={handleSubmit}
             style={styles.loginButton}
           >
-            <Text style={styles.loginButtonText}>Create Request</Text>
+            <Text style={styles.loginButtonText}>Next</Text>
           </Button>
         </View>
       </View>
@@ -287,16 +310,16 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     backgroundColor: "#FFFFFF",
-    height: 120
+    height: 120,
   },
   deleteButton: {
     backgroundColor: "red",
     padding: 10,
     borderRadius: 10,
     width: 80,
-    alignItems: 'center',
+    alignItems: "center",
     marginRight: 10,
-    marginTop: 15
+    marginTop: 15,
   },
   deleteButtonText: {
     color: "#FFFFFF",
@@ -308,12 +331,17 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
     borderColor: "lightgray",
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   itemText: {
     marginHorizontal: 10,
     fontFamily: FontFamily.soraRegular,
-    marginVertical: 2
+    marginVertical: 2,
   },
+  errorText: {
+    textAlign: 'center',
+    fontFamily: FontFamily.soraRegular,
+    marginTop: 100
+  }
 });

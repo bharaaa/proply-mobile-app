@@ -4,7 +4,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { FontFamily } from '../../../../GlobalStyles';
 
-const DropdownItemCategory = ({ data, onValueChange }) => {
+const DropdownList = ({ data, onValueChange }) => {
   const [value, setValue] = useState(null);
 
   const renderItem = item => (
@@ -30,7 +30,7 @@ const DropdownItemCategory = ({ data, onValueChange }) => {
       iconStyle={styles.iconStyle}
       data={data}
       search
-      maxHeight={300}
+      maxHeight={200}
       labelField="label"
       valueField="value"
       placeholder="Select item"
@@ -48,7 +48,7 @@ const DropdownItemCategory = ({ data, onValueChange }) => {
   );
 };
 
-export default DropdownItemCategory;
+export default DropdownList
 
 const styles = StyleSheet.create({
   dropdown: {
