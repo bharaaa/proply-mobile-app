@@ -100,12 +100,12 @@ const route = () => {
           options={{ headerShown: false }}
           component={CreateRequestFunds}
         />
-		<Stack.Screen
+        <Stack.Screen
           name="ProcurementListApproved"
           options={{ headerShown: false }}
           component={ProcurementListApproved}
         />
-		<Stack.Screen
+        <Stack.Screen
           name="ProcurementListRejected"
           options={{ headerShown: false }}
           component={ProcurementListRejected}

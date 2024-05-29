@@ -4,12 +4,6 @@ import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { FontFamily } from '../../../../GlobalStyles';
 
-const data = [
-  { label: 'Furniture', value: '1' },
-  { label: 'Stationery', value: '2' },
-  { label: 'Electronic', value: '3' },
-];
-
 const DropdownItemCategory = ({ data, onValueChange }) => {
   const [value, setValue] = useState(null);
 
@@ -44,7 +38,7 @@ const DropdownItemCategory = ({ data, onValueChange }) => {
       value={value}
       onChange={item => {
         setValue(item.value);
-        onValueChange(item.value); // Pass the selected value to the parent component
+        onValueChange(item.value, item.label);
       }}
       renderLeftIcon={() => (
         <AntDesign style={styles.icon} color="black" name="Safety" size={20} />

@@ -1,13 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import ProcurementRequestService from "../../service/ProcurementRequestService";
-import UserService from "../../service/UserService";
-import ProcurementCategoryService from "../../service/ProcurementCategoryService";
 import ItemCategoryService from "../../service/ItemCategoryService";
 
 const { getAll } = ItemCategoryService()
 
 export const getItemCategoryAction = createAsyncThunk(
-  "procurement-categories",
+  "item-categories",
   async () => {
     try {
       return await getAll();
@@ -15,14 +12,14 @@ export const getItemCategoryAction = createAsyncThunk(
       const invalid = e.message.includes("403");
       const error = {
         error: true,
-        message: invalid ? "Wrong email/password" : e.message,
+        message: invalid ? "Invalid item category" : e.message,
       };
     }
   }
 );
 
 const ItemCategorySlice = createSlice({
-  name: "procurementCategory",
+  name: "itemCategory",
   initialState: {
     isLoading: false,
     itemCategory: {},
@@ -36,7 +33,7 @@ const ItemCategorySlice = createSlice({
         state.error = null;
       })
       .addCase(getItemCategoryAction.fulfilled, (state, { payload }) => {
-        state.procurementCategories.push(payload.data);
+        state.itemCategories.push(payload.data);
         state.isLoading = false;
       })
       .addCase(getItemCategoryAction.rejected, (state) => {
