@@ -1,15 +1,20 @@
 import { FlatList, StatusBar, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontFamily } from '../../../../GlobalStyles'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { Appbar, Button } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProcurementsAction } from '../../../app/feature/ProcurementListSlice'
+import { getByEmailAction } from '../../../app/feature/UserSlice'
+import { jwtDecode } from 'jwt-decode'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const ProcurementList = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
+  const [email, setEmail] = useState('');
+  const [userId, setUserId] = useState('');
 
   const handleHomeManager = () => {
     navigation.goBack()
@@ -18,6 +23,29 @@ const ProcurementList = () => {
   const {procurements} = useSelector((state) => state.procurements)
 
   useEffect(() => {
+    const fetchEmailFromToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+          const decodedToken = jwtDecode(token);
+          const email = decodedToken.email;
+          setEmail(email);
+          console.log('Email:', email);
+          const res = await dispatch(getByEmailAction(email));
+          const userId = res?.payload?.data?.userId;
+          if (userId) {
+            setUserId(userId);
+            console.log('UserId:', userId);
+          } else {
+            console.log('UserId not found in response');
+          }
+        }
+      } catch (error) {
+        console.error('Failed to decode token:', error);
+      }
+    };
+
+    fetchEmailFromToken()
     dispatch(getProcurementsAction())
     console.log(procurements)
   }, [dispatch])

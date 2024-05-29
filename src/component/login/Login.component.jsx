@@ -59,7 +59,7 @@ const Login = () => {
         navigation.navigate('BottomTab');
       }
       else if (role === 'ROLE_MANAGER') {
-        navigation.navigate('BottomTabEmployee');
+        navigation.navigate('BottomTab');
       }
       else if (role === 'ROLE_EMPLOYEE') {
         navigation.navigate('BottomTabEmployee');
