@@ -39,8 +39,6 @@ const Login = () => {
 
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-
-  const service = AuthService();
   const dispatch = useDispatch()
 
   const onSubmit = async () => {
@@ -61,7 +59,7 @@ const Login = () => {
         navigation.navigate('BottomTab');
       }
       else if (role === 'ROLE_MANAGER') {
-        navigation.navigate('BottomTabEmployee');
+        navigation.navigate('BottomTab');
       }
       else if (role === 'ROLE_EMPLOYEE') {
         navigation.navigate('BottomTabEmployee');
