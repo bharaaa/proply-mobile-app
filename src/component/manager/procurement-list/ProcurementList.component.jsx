@@ -57,7 +57,7 @@ const ProcurementList = () => {
         procurement.approvalResponses.some(
           (response) =>
             response.userResponse.userId === userId &&
-            response.status === "pending"
+            response.status === "PENDING"
         )
       );
       setFilteredProcurements(filtered);
