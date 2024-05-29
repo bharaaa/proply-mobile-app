@@ -1,4 +1,12 @@
-import { Image, StatusBar, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import ProfilePhoto from "../../../assets/profile.png";
 import { FontFamily } from "../../../GlobalStyles";
@@ -6,14 +14,23 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import { getByEmailAction } from "../../app/feature/UserSlice";
 import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import { Button } from "react-native-paper";
+import CustomAlert from "../../../CustomAlert";
+import LogoutAlert from "../../../LogoutAlert";
 
 const AccountProfile = () => {
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
   const dispatch = useDispatch();
-  const [fullName, setFullName] = useState("")
-  const [gender, setGender] = useState("")
+  const [fullName, setFullName] = useState("");
+  const [gender, setGender] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [maritalStatus, setMaritalStatus] = useState("");
+  const [role, setRole] = useState("");
+  const navigation = useNavigation();
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     const fetchEmailFromToken = async () => {
@@ -30,19 +47,37 @@ const AccountProfile = () => {
             setFullName(userData.fullName);
             setUserId(userData.userId);
             setGender(userData.gender);
+            setRole(userData.userCredentialResponse.role)
             setProfileImageUrl(userData.profileImageUrl);
-            console.log("Full Name:", userData.fullName);
-            console.log("UserId:", userData.userId);
-            console.log("Profile Image URL:", userData.profileImageUrl);
+            setMaritalStatus(userData.maritalStatus);
           }
         }
       } catch (error) {
         console.error("Failed to decode token:", error);
       }
     };
-  
+
     fetchEmailFromToken();
   }, [dispatch]);
+
+  const handleLogout = async () => {
+    try {
+      setAlertVisible(true);
+    } catch (error) {
+      console.error("Failed to show alert:", error);
+    }
+  };
+
+  const handleYes = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+      navigation.navigate("Login");
+    } catch (error) {
+      console.error("Failed to logout:", error);
+    }
+  };
+
+  const handleNo = () => {};
 
   return (
     <>
@@ -52,32 +87,66 @@ const AccountProfile = () => {
           <Text style={styles.helloText}>Profile</Text>
         </View>
       </View>
-      <View style={styles.container}>
-        <View style={styles.photoContainer}>
-          <Image source={profileImageUrl ? { uri: profileImageUrl } : ProfilePhoto} style={styles.profilePhoto} />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <View style={styles.photoContainer}>
+            <Image
+              source={profileImageUrl ? { uri: profileImageUrl } : ProfilePhoto}
+              style={styles.profilePhoto}
+            />
+          </View>
+          <View style={styles.personalDetailContainer}>
+            <Text style={styles.personalDetailText}>Personal Details</Text>
+            <View>
+              <Text style={styles.emailAddressText}>Email Address</Text>
+            </View>
+            <View style={styles.emailContainer}>
+              <Text style={styles.textInContainer}>{email}</Text>
+            </View>
+            <View>
+              <Text style={styles.emailAddressText}>Full Name</Text>
+            </View>
+            <View style={styles.emailContainer}>
+              <Text style={styles.textInContainer}>{fullName}</Text>
+            </View>
+            <View>
+              <Text style={styles.emailAddressText}>Gender</Text>
+            </View>
+            <View style={styles.emailContainer}>
+              <Text style={styles.textInContainer}>{gender}</Text>
+            </View>
+            <View>
+              <Text style={styles.emailAddressText}>Marital Status</Text>
+            </View>
+            <View style={styles.emailContainer}>
+              <Text style={styles.textInContainer}>{maritalStatus}</Text>
+            </View>
+            <View>
+              <Text style={styles.emailAddressText}>Role</Text>
+            </View>
+            <View style={styles.emailContainer}>
+              <Text style={styles.textInContainer}>{role}</Text>
+            </View>
+            <View style={styles.logoutButtonContainer}>
+              <Button
+                mode="contained"
+                onPress={handleLogout}
+                style={styles.logoutButton}
+              >
+                <Text style={styles.logoutButtonText}>Log Out</Text>
+              </Button>
+              <LogoutAlert
+                isVisible={alertVisible}
+                onClose={() => setAlertVisible(false)}
+                title="Are you sure to Log Out?"
+                message="Logging out will require you to log in again."
+                onYes={handleYes}
+                onNo={handleNo}
+              />
+            </View>
+          </View>
         </View>
-        <View style={styles.personalDetailContainer}>
-          <Text style={styles.personalDetailText}>Personal Details</Text>
-          <View>
-            <Text style={styles.emailAddressText}>Email Address</Text>
-          </View>
-          <View style={styles.emailContainer}>
-            <Text style={styles.textInContainer}>{email}</Text>
-          </View>
-          <View>
-            <Text style={styles.emailAddressText}>Full Name</Text>
-          </View>
-          <View style={styles.emailContainer}>
-            <Text style={styles.textInContainer}>{fullName}</Text>
-          </View>
-          <View>
-            <Text style={styles.emailAddressText}>Gender</Text>
-          </View>
-          <View style={styles.emailContainer}>
-            <Text style={styles.textInContainer}>{gender}</Text>
-          </View>
-        </View>
-      </View>
+      </ScrollView>
     </>
   );
 };
@@ -141,6 +210,20 @@ const styles = StyleSheet.create({
   },
   textInContainer: {
     marginLeft: 20,
+    fontFamily: FontFamily.soraRegular,
+  },
+  logoutButtonContainer: {
+    marginTop: 30,
+    marginHorizontal: 100,
+    justifyContent: "center",
+  },
+  logoutButton: {
+    backgroundColor: "red",
+    borderRadius: 10,
+    padding: 10,
+  },
+  logoutButtonText: {
+    fontSize: 15,
     fontFamily: FontFamily.soraRegular,
   },
 });

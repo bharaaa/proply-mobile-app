@@ -4,7 +4,7 @@ import Modal from "react-native-modal";
 import { FontFamily } from "./GlobalStyles";
 import { Button } from "react-native-paper";
 
-const CustomAlert = ({ isVisible, onClose, title, message, onConfirm }) => {
+const LogoutAlert = ({ isVisible, onClose, title, message, onYes, onNo }) => {
   return (
     <Modal isVisible={isVisible}>
       <View style={styles.modalContainer}>
@@ -12,13 +12,22 @@ const CustomAlert = ({ isVisible, onClose, title, message, onConfirm }) => {
         <Text style={styles.message}>{message}</Text>
         <View style={styles.buttonContainer}>
           <Button
-            style={styles.button}
+            style={styles.yesButton}
             onPress={() => {
-              onConfirm();
+              onYes();
               onClose();
             }}
           >
-            <Text style={styles.buttonText}>OK</Text>
+            <Text style={styles.yesButtonText}>Yes</Text>
+          </Button>
+          <Button
+            style={styles.noButton}
+            onPress={() => {
+              onNo();
+              onClose();
+            }}
+          >
+            <Text style={styles.noButtonText}>No</Text>
           </Button>
         </View>
       </View>
@@ -48,17 +57,31 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
   },
-  button: {
-    backgroundColor: "#4D869C",
-    borderRadius: 5,
+  yesButton: {
+    borderRadius: 10,
     width: 80,
+    marginHorizontal: 10,
+    borderColor: "#4D869C",
+    borderWidth: 2
   },
-  buttonText: {
+  noButton: {
+    backgroundColor: "#4D869C",
+    borderRadius: 10,
+    width: 80,
+    marginHorizontal: 10
+  },
+  yesButtonText: {
+    color: "#4D869C",
+    fontSize: 14,
+    fontFamily: FontFamily.soraRegular,
+    textAlign: "center",
+  },
+  noButtonText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: FontFamily.soraRegular,
     textAlign: "center",
   },
 });
 
-export default CustomAlert;
+export default LogoutAlert;
