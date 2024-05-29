@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: "left",
     color: "black",
-    fontSize: 16,
+    fontSize: 12,
     fontFamily: FontFamily.soraSemiBold,
   },
   noRequestText: {

@@ -185,6 +185,7 @@ const Login = () => {
           onClose={() => setAlertVisible(false)}
           title="Login Failed"
           message={alertMessage}
+          onConfirm={() => setAlertVisible(false)}
           />
         </View>
         <View style={styles.dontHaveContainer}>
