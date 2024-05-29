@@ -70,10 +70,6 @@ const Login = () => {
     }
   }
 
-  const handleSignUp = () => {
-    navigation.navigate('SignUp')
-  }
-
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
@@ -187,12 +183,6 @@ const Login = () => {
           message={alertMessage}
           onConfirm={() => setAlertVisible(false)}
           />
-        </View>
-        <View style={styles.dontHaveContainer}>
-          <Text style={styles.dontHaveText1}>Dont have an account? </Text>
-          <TouchableOpacity activeOpacity={0.6} onPress={handleSignUp}>
-            <Text style={styles.dontHaveText2}>Sign Up</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </>

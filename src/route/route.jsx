@@ -4,9 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import ExampleHome from "../component/home/ExampleHome";
 import OnboardingScreen from "../component/onboarding/OnboardingScreen.component";
 import Login from "../component/login/Login.component";
-import SignUp from "../component/sign-up/SignUp.component";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SignUpSuccess from "../component/sign-up/SignUpSuccess.component";
 import HomeManager from "../component/home-manager/HomeManager.component";
 import { BottomNavigation } from "react-native-paper";
 import BottomTab from "../component/bottom-navigation/BottomTab.component";
@@ -23,6 +21,7 @@ import CreateRequestGoods from "../component/employee/create-request/CreateReque
 import CreateRequestFunds from "../component/employee/create-request/CreateRequestFunds.component";
 import UserApproval from "../component/employee/create-request/UserApproval.component";
 import ProcurementRequestSuccess from "../component/employee/create-request/ProcurementRequestSuccess.component";
+import RequestHistory from "../component/employee/request-history/RequestHistory.component";
 
 const Stack = createNativeStackNavigator();
 
@@ -46,11 +45,6 @@ const route = () => {
           name="Login"
           options={{ headerShown: false }}
           component={Login}
-        />
-        <Stack.Screen
-          name="SignUp"
-          options={{ headerShown: false }}
-          component={SignUp}
         />
         <Stack.Screen
           name="BottomTab"
@@ -101,6 +95,11 @@ const route = () => {
           name="CreateRequestFunds"
           options={{ headerShown: false }}
           component={CreateRequestFunds}
+        />
+        <Stack.Screen
+          name="RequestHistory"
+          options={{ headerShown: false }}
+          component={RequestHistory}
         />
         <Stack.Screen
           name="ProcurementListApproved"

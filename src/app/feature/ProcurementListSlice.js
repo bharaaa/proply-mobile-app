@@ -41,6 +41,17 @@ export const rejectProcurementsAction = createAsyncThunk(
     }
 );
 
+export const getByUserIdAction = createAsyncThunk(
+    "procurements/byUserId",
+    async (userId) => {
+        try {
+            return await getByUserId(userId);
+        } catch (e) {
+            throw e.message;
+        }
+    }
+);
+
 const ProcurementListSlice = createSlice({
     name: "procurements",
     initialState: {
@@ -90,6 +101,16 @@ const ProcurementListSlice = createSlice({
         });
         builder.addCase(rejectProcurementsAction.rejected, (state) => {
             state.isLoading = false
+        });
+        builder.addCase(getByUserIdAction.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getByUserIdAction.fulfilled, (state, action) => {
+            state.procurements = action.payload.data;
+            state.isLoading = false;
+        });
+        builder.addCase(getByUserIdAction.rejected, (state) => {
+            state.isLoading = false;
         });
     }
 })

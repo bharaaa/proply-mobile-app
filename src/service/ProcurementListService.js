@@ -55,10 +55,27 @@ const ProcurementListService = () => {
     }
   };
 
+  const getByUserId = async (userId) => {
+    try {
+      const response = await axiosInstance.get(`procurements/search?user-id=${userId}`);
+      console.log(response.data);
+      
+      if (response.data.statusCode === 200) {
+        return response.data;
+      } else {
+        throw new Error(response.data.message || response.status);
+      }
+    } catch (error) {
+      console.log(error)
+      throw new Error(error.response?.data?.message);
+    }
+  };
+
   return {
     getAll,
     approve,
-    reject
+    reject,
+    getByUserId
   };
 };
 
