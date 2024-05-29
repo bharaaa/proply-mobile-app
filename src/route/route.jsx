@@ -14,13 +14,15 @@ import HomeEmployee from "../component/home-employee/HomeEmployee.component";
 import BottomTabEmployee from "../component/bottom-navigation/BottomTabEmployee.component";
 import ProcurementList from "../component/manager/procurement-list/ProcurementList.component";
 import ProcurementListDetail from "../component/manager/procurement-list/ProcurementListDetail.component";
-import CreateRequest from "../component/employee/create-request/CreateRequest";
-import CreateRequestFunds from "../component/employee/create-request/CreateRequestFunds";
-import CreateRequestGoods from "../component/employee/create-request/CreateRequestGoods";
 import ProcurementHistory from "../component/manager/procurement-history/ProcurementHistory.component";
 import ProcurementHistoryDetail from "../component/manager/procurement-history/ProcurementHistoryDetail.component";
 import ProcurementListApproved from "../component/manager/procurement-list/ProcurementListApproved.component";
 import ProcurementListRejected from "../component/manager/procurement-list/ProcurementListRejected.component";
+import CreateRequest from "../component/employee/create-request/CreateRequest.component";
+import CreateRequestGoods from "../component/employee/create-request/CreateRequestGoods.component";
+import CreateRequestFunds from "../component/employee/create-request/CreateRequestFunds.component";
+import UserApproval from "../component/employee/create-request/UserApproval.component";
+import ProcurementRequestSuccess from "../component/employee/create-request/ProcurementRequestSuccess.component";
 
 const Stack = createNativeStackNavigator();
 
@@ -100,15 +102,25 @@ const route = () => {
           options={{ headerShown: false }}
           component={CreateRequestFunds}
         />
-		<Stack.Screen
+        <Stack.Screen
           name="ProcurementListApproved"
           options={{ headerShown: false }}
           component={ProcurementListApproved}
         />
-		<Stack.Screen
+        <Stack.Screen
           name="ProcurementListRejected"
           options={{ headerShown: false }}
           component={ProcurementListRejected}
+        />
+        <Stack.Screen
+          name="UserApproval"
+          options={{ headerShown: false }}
+          component={UserApproval}
+        />
+        <Stack.Screen
+          name="ProcurementRequestSuccess"
+          options={{ headerShown: false }}
+          component={ProcurementRequestSuccess}
         />
       </Stack.Navigator>
     </NavigationContainer>
