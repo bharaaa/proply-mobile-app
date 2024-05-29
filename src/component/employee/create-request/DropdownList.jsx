@@ -4,12 +4,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { FontFamily } from '../../../../GlobalStyles';
 
-const data = [
-  { label: 'Goods', value: '1' },
-  { label: 'Funds', value: '2' },
-];
-
-const DropdownProcurementCategory = ({ onValueChange }) => {
+const DropdownList = ({ data, onValueChange }) => {
   const [value, setValue] = useState(null);
 
   const renderItem = item => (
@@ -43,7 +38,7 @@ const DropdownProcurementCategory = ({ onValueChange }) => {
       value={value}
       onChange={item => {
         setValue(item.value);
-        onValueChange(item.value);
+        onValueChange(item.value, item.label);
       }}
       renderLeftIcon={() => (
         <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
@@ -53,7 +48,7 @@ const DropdownProcurementCategory = ({ onValueChange }) => {
   );
 };
 
-export default DropdownProcurementCategory;
+export default DropdownList
 
 const styles = StyleSheet.create({
   dropdown: {
