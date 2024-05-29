@@ -97,7 +97,6 @@ const ProcurementListDetail = () => {
         <Text style={styles.detailText}>Item: {item.itemResponse.name}</Text>
       )}
       <Text style={styles.detailText}>Quantity: {item.quantity}</Text>
-      <Text style={styles.detailText}>Notes: {item.notes}</Text>
       <View style={styles.buttonContainer}>
         {approvalStatus[item.procurementDetailId] ? (
           <Text style={styles.statusText}>

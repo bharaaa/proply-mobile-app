@@ -1,101 +1,126 @@
-import { FlatList, StatusBar, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { FontFamily } from '../../../../GlobalStyles'
-import { FontAwesome6 } from '@expo/vector-icons'
-import { Appbar, Button } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
-import { useDispatch, useSelector } from 'react-redux'
-import { getProcurementsAction } from '../../../app/feature/ProcurementListSlice'
-import { getByEmailAction } from '../../../app/feature/UserSlice'
-import { jwtDecode } from 'jwt-decode'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { FlatList, StatusBar, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { FontFamily } from "../../../../GlobalStyles";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { Appbar, Button } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { getProcurementsAction } from "../../../app/feature/ProcurementListSlice";
+import { getByEmailAction } from "../../../app/feature/UserSlice";
+import { jwtDecode } from "jwt-decode";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProcurementList = () => {
-  const dispatch = useDispatch()
-  const navigation = useNavigation()
-  const [email, setEmail] = useState('');
-  const [userId, setUserId] = useState('');
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
+  const [filteredProcurements, setFilteredProcurements] = useState([]);
 
   const handleHomeManager = () => {
-    navigation.goBack()
-  }
+    navigation.goBack();
+  };
 
-  const {procurements} = useSelector((state) => state.procurements)
+  const { procurements } = useSelector((state) => state.procurements);
 
   useEffect(() => {
     const fetchEmailFromToken = async () => {
       try {
-        const token = await AsyncStorage.getItem('token');
+        const token = await AsyncStorage.getItem("token");
         if (token) {
           const decodedToken = jwtDecode(token);
           const email = decodedToken.email;
           setEmail(email);
-          console.log('Email:', email);
+          console.log("Email:", email);
           const res = await dispatch(getByEmailAction(email));
           const userId = res?.payload?.data?.userId;
           if (userId) {
             setUserId(userId);
-            console.log('UserId:', userId);
+            console.log("UserId:", userId);
           } else {
-            console.log('UserId not found in response');
+            console.log("UserId not found in response");
           }
         }
       } catch (error) {
-        console.error('Failed to decode token:', error);
+        console.error("Failed to decode token:", error);
       }
     };
 
-    fetchEmailFromToken()
-    dispatch(getProcurementsAction())
-    console.log(procurements)
-  }, [dispatch])
+    fetchEmailFromToken();
+    dispatch(getProcurementsAction());
+    console.log(procurements);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (userId && procurements) {
+      const filtered = procurements.filter((procurement) =>
+        procurement.approvalResponses.some(
+          (response) =>
+            response.userResponse.userId === userId &&
+            response.status === "pending"
+        )
+      );
+      setFilteredProcurements(filtered);
+      console.log("Filtered Procurements:", filtered);
+    }
+  }, [userId, procurements]);
 
   const renderItem = ({ item }) => (
-    <Button 
-    mode="contained" 
-    key={item.procurementId}
-    onPress={() => {
-      const { onPress, ...itemWithoutOnPress } = item;
-      navigation.navigate("ProcurementListDetail", { item: itemWithoutOnPress });
-    }}
-    style={styles.button}
+    <Button
+      mode="contained"
+      key={item.procurementId}
+      onPress={() => {
+        const { onPress, ...itemWithoutOnPress } = item;
+        navigation.navigate("ProcurementListDetail", {
+          item: itemWithoutOnPress,
+        });
+      }}
+      style={styles.button}
     >
-      <Text style={styles.buttonText}>{item.userResponse.divisionResponse.name} Division, {item.userResponse.fullName}</Text>
+      <Text style={styles.buttonText}>
+        {item.userResponse.divisionResponse.name} Division,{" "}
+        {item.userResponse.fullName}
+      </Text>
     </Button>
   );
 
   return (
     <>
-    <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
-    <Appbar.Header
-    mode='center-aligned'
-    style={styles.header}
-    >
-      <Appbar.BackAction onPress={handleHomeManager} />
-      <Appbar.Content title="Procurement List" titleStyle={styles.title}/>
-    </Appbar.Header>
-    <View style={styles.container}>
-      <View style={styles.buttonContainer}>
-      <Text style={styles.tipsText}>Manage all procurement request, 
-      here you can see a list of request from each employee</Text>
-        <FlatList
-        data={procurements}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.procurementId}
-        showsVerticalScrollIndicator= {false}
-        />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+      <Appbar.Header mode="center-aligned" style={styles.header}>
+        <Appbar.BackAction onPress={handleHomeManager} />
+        <Appbar.Content title="Procurement List" titleStyle={styles.title} />
+      </Appbar.Header>
+      <View style={styles.container}>
+        <View style={styles.buttonContainer}>
+          <Text style={styles.tipsText}>
+            Manage all procurement request, here you can see a list of request
+            from each employee
+          </Text>
+          {filteredProcurements.length === 0 ? (
+            <Text style={styles.noRequestText}>
+              No procurement request from employee
+            </Text>
+          ) : (
+            <FlatList
+              data={filteredProcurements}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.procurementId}
+              showsVerticalScrollIndicator={false}
+            />
+          )}
+        </View>
       </View>
-    </View>
     </>
   );
-}
+};
 
-export default ProcurementList
+export default ProcurementList;
 
 const styles = StyleSheet.create({
   header: {
     height: 80,
-    backgroundColor: '#FFFFFF'
+    backgroundColor: "#FFFFFF",
   },
   title: {
     fontFamily: FontFamily.soraSemiBold,
@@ -103,45 +128,52 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
   },
   headerContainer: {
-    flexDirection: 'row',
-    backgroundColor: 'red',
+    flexDirection: "row",
+    backgroundColor: "red",
     height: 80,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
   headerText: {
-    textAlign: 'center',
+    textAlign: "center",
     fontFamily: FontFamily.soraSemiBold,
-    marginLeft: 200
+    marginLeft: 200,
   },
   tipsText: {
-    textAlign: 'center',
+    textAlign: "center",
     fontFamily: FontFamily.soraRegular,
-    color: '#898989',
+    color: "#898989",
     fontSize: 14,
     marginTop: 10,
     marginBottom: 30,
-    marginHorizontal: 30
+    marginHorizontal: 30,
   },
   buttonContainer: {
-    justifyContent: 'flex-start',
-    paddingBottom: 100
+    justifyContent: "flex-start",
+    paddingBottom: 100,
   },
   button: {
-    backgroundColor: '#CDE8E5',
+    backgroundColor: "#CDE8E5",
     borderRadius: 10,
     height: 60,
     padding: 10,
     marginVertical: 10,
-    marginHorizontal: 30
+    marginHorizontal: 30,
   },
   buttonText: {
-    textAlign: 'left',
-    color: 'black',
+    textAlign: "left",
+    color: "black",
     fontSize: 16,
-    fontFamily: FontFamily.soraSemiBold
+    fontFamily: FontFamily.soraSemiBold,
   },
-})
+  noRequestText: {
+    textAlign: "center",
+    fontFamily: FontFamily.soraRegular,
+    color: "#898989",
+    fontSize: 12,
+    marginTop: 250,
+  }
+});
