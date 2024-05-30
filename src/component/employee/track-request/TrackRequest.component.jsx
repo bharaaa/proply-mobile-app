@@ -13,7 +13,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { getProcurementsByUserIdAction } from "../../../app/feature/ProcurementListSlice";
 dayjs.extend(relativeTime);
 
-const RequestHistory = () => {
+const TrackRequest = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
@@ -60,7 +60,7 @@ const RequestHistory = () => {
       const filtered = procurements.filter((procurement) =>
         procurement.approvalResponses.some(
           (response) =>
-            response.status === "APPROVED" || response.status === "REJECTED"
+            response.status === "PENDING"
         )
       );
       setFilteredProcurements(filtered);
@@ -75,7 +75,7 @@ const RequestHistory = () => {
         key={item.procurementId}
         onPress={() => {
           const { onPress, ...itemWithoutOnPress } = item;
-          navigation.navigate("RequestHistoryDetail", {
+          navigation.navigate("TrackRequestDetail", {
             item: itemWithoutOnPress,
           });
         }}
@@ -94,19 +94,19 @@ const RequestHistory = () => {
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <Appbar.Header mode="center-aligned" style={styles.header}>
         <Appbar.BackAction onPress={handleHomeManager} />
-        <Appbar.Content title="Request History" titleStyle={styles.title} />
+        <Appbar.Content title="Track Request" titleStyle={styles.title} />
       </Appbar.Header>
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
           <Text style={styles.tipsText}>
-            History of all procurement requests
+            Track the status of ongoing request
           </Text>
           {isLoading ? (
             <Text style={styles.loadingText}>Loading...</Text>
           ) : error ? (
             <Text style={styles.errorText}>Error: {error}</Text>
           ) : filteredProcurements.length === 0 ? (
-            <Text style={styles.noRequestText}>No request history</Text>
+            <Text style={styles.noRequestText}>No ongoing request</Text>
           ) : (
             <FlatList
               data={filteredProcurements}
@@ -121,7 +121,7 @@ const RequestHistory = () => {
   );
 };
 
-export default RequestHistory;
+export default TrackRequest;
 
 const styles = StyleSheet.create({
   header: {
@@ -188,5 +188,5 @@ const styles = StyleSheet.create({
     color: "#898989",
     fontSize: 12,
     marginTop: 250,
-  }
+  },
 });

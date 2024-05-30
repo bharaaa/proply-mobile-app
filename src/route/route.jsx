@@ -23,6 +23,8 @@ import UserApproval from "../component/employee/create-request/UserApproval.comp
 import ProcurementRequestSuccess from "../component/employee/create-request/ProcurementRequestSuccess.component";
 import RequestHistory from "../component/employee/request-history/RequestHistory.component";
 import RequestHistoryDetail from "../component/employee/request-history/RequestHistoryDetail.component";
+import TrackRequest from "../component/employee/track-request/TrackRequest.component";
+import TrackRequestDetail from "../component/employee/track-request/TrackRequestDetail.component";
 
 const Stack = createNativeStackNavigator();
 
@@ -106,6 +108,16 @@ const route = () => {
           name="RequestHistoryDetail"
           options={{ headerShown: false }}
           component={RequestHistoryDetail}
+        />
+        <Stack.Screen
+          name="TrackRequest"
+          options={{ headerShown: false }}
+          component={TrackRequest}
+        />
+        <Stack.Screen
+          name="TrackRequestDetail"
+          options={{ headerShown: false }}
+          component={TrackRequestDetail}
         />
         <Stack.Screen
           name="ProcurementListApproved"

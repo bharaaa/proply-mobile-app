@@ -28,6 +28,10 @@ const HomeEmployee = () => {
     navigation.navigate('RequestHistory')
   }
 
+  const handleTrackRequest = () => {
+    navigation.navigate('TrackRequest')
+  }
+
   return (
     <>
     <StatusBar barStyle="default" backgroundColor="#313131" />
@@ -49,7 +53,7 @@ const HomeEmployee = () => {
           <Button 
           mode="contained" 
           style={styles.listButton}
-          onPress={() => console.log('Pressed')}
+          onPress={handleTrackRequest}
           >
             <Text style={styles.listButtonText}>Track Request</Text>
           </Button>
