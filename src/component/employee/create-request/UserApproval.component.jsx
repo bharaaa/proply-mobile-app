@@ -99,6 +99,7 @@ const UserApproval = ({ route }) => {
           <Appbar.BackAction onPress={handleHomeEmployee} />
           <Appbar.Content title="Manager Approval" titleStyle={styles.title} />
         </Appbar.Header>
+        <Text style={styles.tipsText}>Select the manager you want to request approval from, you can select up to 3 manager</Text>
         <View style={styles.upperButtonContainer}>
           <Button
             mode="contained"
@@ -277,5 +278,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontFamily: FontFamily.soraRegular,
     marginVertical: 2,
+  },
+  tipsText: {
+    textAlign: "center",
+    fontFamily: FontFamily.soraRegular,
+    color: "#898989",
+    fontSize: 13,
+    marginTop: 10,
+    marginBottom: 30,
+    marginHorizontal: 30,
   },
 });
