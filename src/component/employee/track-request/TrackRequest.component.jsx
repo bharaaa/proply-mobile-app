@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getByEmailAction } from "../../../app/feature/UserSlice";
 import { jwtDecode } from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getProcurementsByUserIdAction } from "../../../app/feature/ProcurementListSlice";
 
 const TrackRequest = () => {
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ const TrackRequest = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (userId && procurements) {
+    if (procurements) {
       const filtered = procurements.filter((procurement) =>
         procurement.approvalResponses.some(
           (response) =>
@@ -62,7 +63,7 @@ const TrackRequest = () => {
       setFilteredProcurements(filtered);
       console.log("Filtered Procurements:", filtered);
     }
-  }, [userId, procurements]);
+  }, [procurements]);
 
   const renderItem = ({ item }) => {
     return (

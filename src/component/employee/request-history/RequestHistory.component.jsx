@@ -8,10 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getByEmailAction } from "../../../app/feature/UserSlice";
 import { jwtDecode } from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import { getProcurementsByUserIdAction } from "../../../app/feature/ProcurementListSlice";
-dayjs.extend(relativeTime);
 
 const RequestHistory = () => {
   const dispatch = useDispatch();
@@ -56,7 +53,7 @@ const RequestHistory = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (userId && procurements) {
+    if (procurements) {
       const filtered = procurements.filter((procurement) =>
         procurement.approvalResponses.some(
           (response) =>
@@ -66,7 +63,7 @@ const RequestHistory = () => {
       setFilteredProcurements(filtered);
       console.log("Filtered Procurements:", filtered);
     }
-  }, [userId, procurements]);
+  }, [procurements]);
 
   const renderItem = ({ item }) => {
     return (
