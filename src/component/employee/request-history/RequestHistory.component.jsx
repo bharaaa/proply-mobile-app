@@ -1,4 +1,11 @@
-import { FlatList, StatusBar, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { FontFamily } from "../../../../GlobalStyles";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -16,16 +23,18 @@ const RequestHistory = () => {
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
   const [filteredProcurements, setFilteredProcurements] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleHomeManager = () => {
     navigation.goBack();
   };
 
-  const { procurements, isLoading, error } = useSelector(
+  const { procurements, error } = useSelector(
     (state) => state.procurements
   );
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchEmailFromToken = async () => {
       try {
         const token = await AsyncStorage.getItem("token");
@@ -39,7 +48,7 @@ const RequestHistory = () => {
           if (userId) {
             setUserId(userId);
             console.log("UserId:", userId);
-            dispatch(getProcurementsByUserIdAction(userId));
+            return userId;
           } else {
             console.log("UserId not found in response");
           }
@@ -49,7 +58,19 @@ const RequestHistory = () => {
       }
     };
 
-    fetchEmailFromToken();
+    const loadProcurements = async () => {
+      const userId = await fetchEmailFromToken();
+      if (userId) {
+        const procurementRes = await dispatch(
+          getProcurementsByUserIdAction(userId)
+        );
+        console.log("ProcurementsRes:", procurementRes.payload.data);
+        setIsLoading(false);
+      }
+    };
+
+    loadProcurements()
+    console.log("Unfiltered Procurements: ", procurements);
   }, [dispatch]);
 
   useEffect(() => {
@@ -185,5 +206,5 @@ const styles = StyleSheet.create({
     color: "#898989",
     fontSize: 12,
     marginTop: 250,
-  }
+  },
 });

@@ -16,16 +16,16 @@ const TrackRequest = () => {
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
   const [filteredProcurements, setFilteredProcurements] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleHomeManager = () => {
     navigation.goBack();
   };
 
-  const { procurements, isLoading, error } = useSelector(
-    (state) => state.procurements
-  );
+  const { procurements, error } = useSelector((state) => state.procurements);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchEmailFromToken = async () => {
       try {
         const token = await AsyncStorage.getItem("token");
@@ -39,7 +39,7 @@ const TrackRequest = () => {
           if (userId) {
             setUserId(userId);
             console.log("UserId:", userId);
-            dispatch(getProcurementsByUserIdAction(userId));
+            return userId;
           } else {
             console.log("UserId not found in response");
           }
@@ -49,15 +49,26 @@ const TrackRequest = () => {
       }
     };
 
-    fetchEmailFromToken();
+    const loadProcurements = async () => {
+      const userId = await fetchEmailFromToken();
+      if (userId) {
+        const procurementRes = await dispatch(
+          getProcurementsByUserIdAction(userId)
+        );
+        console.log("ProcurementsRes:", procurementRes.payload.data);
+        setIsLoading(false);
+      }
+    };
+
+    loadProcurements();
+    console.log("Unfiltered Procurements: ", procurements);
   }, [dispatch]);
 
   useEffect(() => {
     if (procurements) {
       const filtered = procurements.filter((procurement) =>
         procurement.approvalResponses.some(
-          (response) =>
-            response.status === "PENDING"
+          (response) => response.status === "PENDING"
         )
       );
       setFilteredProcurements(filtered);

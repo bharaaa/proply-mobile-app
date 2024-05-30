@@ -50,7 +50,7 @@ const ProcurementList = () => {
 
     fetchEmailFromToken();
     dispatch(getProcurementsAction());
-    console.log(procurements);
+    console.log("Procurement Data (LIST)", procurements);
   }, [dispatch]);
 
   useEffect(() => {
@@ -104,7 +104,7 @@ const ProcurementList = () => {
           ) : error ? (
             <Text style={styles.errorText}>Error: {error}</Text>
           ) : filteredProcurements.length === 0 ? (
-            <Text style={styles.noRequestText}>No request history</Text>
+            <Text style={styles.noRequestText}>No procurement list</Text>
           ) : (
             <FlatList
               data={filteredProcurements}

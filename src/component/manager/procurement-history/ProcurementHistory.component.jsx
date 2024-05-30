@@ -105,7 +105,7 @@ const ProcurementHistory = () => {
           ) : error ? (
             <Text style={styles.errorText}>Error: {error}</Text>
           ) : filteredProcurements.length === 0 ? (
-            <Text style={styles.noRequestText}>No request history</Text>
+            <Text style={styles.noRequestText}>No procurement history</Text>
           ) : (
             <FlatList
               data={filteredProcurements}

@@ -45,8 +45,8 @@ export const getProcurementsByUserIdAction = createAsyncThunk(
   "procurements/fetchByUserId",
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await getByUserId(userId)
-      if (response.data.statusCode === 200) {
+      const response = await getByUserId(userId);
+      if (response.statusCode === 200) {
         return response.data;
       } else {
         return rejectWithValue(response.data.message || response.status);
@@ -115,14 +115,21 @@ const ProcurementListSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     });
-    builder.addCase(getProcurementsByUserIdAction.fulfilled, (state, { payload }) => {
-      state.procurements = payload.data;
-      state.isLoading = false;
-    });
-    builder.addCase(getProcurementsByUserIdAction.rejected, (state, { payload }) => {
-      state.isLoading = false;
-      state.error = payload;
-    });
+    builder.addCase(
+      getProcurementsByUserIdAction.fulfilled,
+      (state, { payload }) => {
+        state.procurements = payload;
+        console.log("Fullfilled (get by userid)", state.procurements);
+        state.isLoading = false;
+      }
+    );
+    builder.addCase(
+      getProcurementsByUserIdAction.rejected,
+      (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      }
+    );
   },
 });
 
