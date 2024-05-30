@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { getUsersAction } from "../../../app/feature/UserSlice";
 import DropdownList from "./DropdownList";
 import { addProcurementsAction } from "../../../app/feature/ProcurementRequestSlice";
+import LogoutAlert from "../../../../LogoutAlert";
 
 const UserApproval = ({ route }) => {
   const [manager1, setManager1] = useState("");
@@ -14,6 +15,8 @@ const UserApproval = ({ route }) => {
   const [manager3, setManager3] = useState("");
   const [users, setUsers] = useState([]);
   const [visibleDropdowns, setVisibleDropdowns] = useState(0);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -62,7 +65,17 @@ const UserApproval = ({ route }) => {
   const level = visibleDropdowns;
 
   const createRequest = () => {
-    const approvalRequests = [manager1, manager2, manager3].map(userId => ({ userId }));
+    try {
+      setAlertVisible(true);
+    } catch (error) {
+      console.error("Failed to show alert:", error);
+    }
+  };
+
+  const handleYes = async () => {
+    const approvalRequests = [manager1, manager2, manager3].map((userId) => ({
+      userId,
+    }));
     dispatch(
       addProcurementsAction({
         userId,
@@ -72,9 +85,11 @@ const UserApproval = ({ route }) => {
         level,
       })
     );
-    console.log("Success create request")
-    navigation.navigate('ProcurementRequestSuccess')
+    console.log("Success create request");
+    navigation.navigate("ProcurementRequestSuccess");
   };
+
+  const handleNo = () => {};
 
   return (
     <>
@@ -84,6 +99,7 @@ const UserApproval = ({ route }) => {
           <Appbar.BackAction onPress={handleHomeEmployee} />
           <Appbar.Content title="Manager Approval" titleStyle={styles.title} />
         </Appbar.Header>
+        <Text style={styles.tipsText}>Select the manager you want to request approval from, you can select up to 3 manager</Text>
         <View style={styles.upperButtonContainer}>
           <Button
             mode="contained"
@@ -133,6 +149,14 @@ const UserApproval = ({ route }) => {
           >
             <Text style={styles.loginButtonText}>Create Request</Text>
           </Button>
+          <LogoutAlert
+            isVisible={alertVisible}
+            onClose={() => setAlertVisible(false)}
+            title="Are you sure to create this request?"
+            message="This cant be undone"
+            onYes={handleYes}
+            onNo={handleNo}
+          />
         </View>
       </View>
     </>
@@ -254,5 +278,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontFamily: FontFamily.soraRegular,
     marginVertical: 2,
+  },
+  tipsText: {
+    textAlign: "center",
+    fontFamily: FontFamily.soraRegular,
+    color: "#898989",
+    fontSize: 13,
+    marginTop: 10,
+    marginBottom: 30,
+    marginHorizontal: 30,
   },
 });

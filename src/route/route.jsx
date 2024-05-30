@@ -25,6 +25,8 @@ import RequestHistory from "../component/employee/request-history/RequestHistory
 import RequestHistoryDetail from "../component/employee/request-history/RequestHistoryDetail.component";
 import TrackRequest from "../component/employee/track-request/TrackRequest.component";
 import TrackRequestDetail from "../component/employee/track-request/TrackRequestDetail.component";
+import ForgotPassword from "../component/login/ForgotPassword.component";
+import ForgotPasswordSuccess from "../component/login/ForgotPasswordSuccess.component";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,7 +34,7 @@ const route = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="Onboarding"
         screenOptions={{
           gestureEnabled: true,
           gestureDirection: "horizontal",
@@ -48,6 +50,16 @@ const route = () => {
           name="Login"
           options={{ headerShown: false }}
           component={Login}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          options={{ headerShown: false }}
+          component={ForgotPassword}
+        />
+        <Stack.Screen
+          name="ForgotPasswordSuccess"
+          options={{ headerShown: false }}
+          component={ForgotPasswordSuccess}
         />
         <Stack.Screen
           name="BottomTab"
