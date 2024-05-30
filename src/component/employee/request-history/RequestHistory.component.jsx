@@ -5,15 +5,12 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { Appbar, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getByUserIdAction,
-  getProcurementsAction,
-} from "../../../app/feature/ProcurementListSlice";
 import { getByEmailAction } from "../../../app/feature/UserSlice";
 import { jwtDecode } from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { getProcurementsByUserIdAction } from "../../../app/feature/ProcurementListSlice";
 dayjs.extend(relativeTime);
 
 const RequestHistory = () => {
@@ -27,7 +24,9 @@ const RequestHistory = () => {
     navigation.goBack();
   };
 
-  const { procurements } = useSelector((state) => state.procurements);
+  const { procurements, isLoading, error } = useSelector(
+    (state) => state.procurements
+  );
 
   useEffect(() => {
     const fetchEmailFromToken = async () => {
@@ -43,6 +42,7 @@ const RequestHistory = () => {
           if (userId) {
             setUserId(userId);
             console.log("UserId:", userId);
+            dispatch(getProcurementsByUserIdAction(userId));
           } else {
             console.log("UserId not found in response");
           }
@@ -53,8 +53,6 @@ const RequestHistory = () => {
     };
 
     fetchEmailFromToken();
-    dispatch(getByUserIdAction(userId));
-    console.log(procurements);
   }, [dispatch]);
 
   useEffect(() => {
@@ -62,7 +60,6 @@ const RequestHistory = () => {
       const filtered = procurements.filter((procurement) =>
         procurement.approvalResponses.some(
           (response) =>
-            response.userResponse.userId === userId &&
             (response.status === "APPROVED" || response.status === "REJECTED")
         )
       );
@@ -102,12 +99,14 @@ const RequestHistory = () => {
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
           <Text style={styles.tipsText}>
-            History of all procurement request
+            History of all procurement requests
           </Text>
-          {filteredProcurements.length === 0 ? (
-            <Text style={styles.noRequestText}>
-              No request history
-            </Text>
+          {isLoading ? (
+            <Text style={styles.loadingText}>Loading...</Text>
+          ) : error ? (
+            <Text style={styles.errorText}>Error: {error}</Text>
+          ) : filteredProcurements.length === 0 ? (
+            <Text style={styles.noRequestText}>No request history</Text>
           ) : (
             <FlatList
               data={filteredProcurements}
@@ -183,4 +182,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 250,
   },
+  loadingText: {
+    textAlign: "center",
+    fontFamily: FontFamily.soraRegular,
+    color: "#898989",
+    fontSize: 12,
+    marginTop: 250,
+  }
 });

@@ -22,6 +22,7 @@ import CreateRequestFunds from "../component/employee/create-request/CreateReque
 import UserApproval from "../component/employee/create-request/UserApproval.component";
 import ProcurementRequestSuccess from "../component/employee/create-request/ProcurementRequestSuccess.component";
 import RequestHistory from "../component/employee/request-history/RequestHistory.component";
+import RequestHistoryDetail from "../component/employee/request-history/RequestHistoryDetail.component";
 
 const Stack = createNativeStackNavigator();
 
@@ -100,6 +101,11 @@ const route = () => {
           name="RequestHistory"
           options={{ headerShown: false }}
           component={RequestHistory}
+        />
+        <Stack.Screen
+          name="RequestHistoryDetail"
+          options={{ headerShown: false }}
+          component={RequestHistoryDetail}
         />
         <Stack.Screen
           name="ProcurementListApproved"

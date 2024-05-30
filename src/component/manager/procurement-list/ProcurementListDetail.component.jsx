@@ -217,12 +217,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginHorizontal: 80,
+    marginBottom: 30
   },
   buttonReject: {
     backgroundColor: "red",
     borderRadius: 10,
     padding: 10,
     marginHorizontal: 80,
+    marginBottom: 30
   },
   buttonText: {
     fontSize: 14,

@@ -21,7 +21,9 @@ const ProcurementList = () => {
     navigation.goBack();
   };
 
-  const { procurements } = useSelector((state) => state.procurements);
+  const { procurements, isLoading, error } = useSelector(
+    (state) => state.procurements
+  );
 
   useEffect(() => {
     const fetchEmailFromToken = async () => {
@@ -97,10 +99,12 @@ const ProcurementList = () => {
             Manage all procurement request, here you can see a list of request
             from each employee
           </Text>
-          {filteredProcurements.length === 0 ? (
-            <Text style={styles.noRequestText}>
-              No procurement request from employee
-            </Text>
+          {isLoading ? (
+            <Text style={styles.loadingText}>Loading...</Text>
+          ) : error ? (
+            <Text style={styles.errorText}>Error: {error}</Text>
+          ) : filteredProcurements.length === 0 ? (
+            <Text style={styles.noRequestText}>No request history</Text>
           ) : (
             <FlatList
               data={filteredProcurements}
@@ -175,5 +179,12 @@ const styles = StyleSheet.create({
     color: "#898989",
     fontSize: 12,
     marginTop: 250,
-  }
+  },
+  loadingText: {
+    textAlign: "center",
+    fontFamily: FontFamily.soraRegular,
+    color: "#898989",
+    fontSize: 12,
+    marginTop: 250,
+  },
 });

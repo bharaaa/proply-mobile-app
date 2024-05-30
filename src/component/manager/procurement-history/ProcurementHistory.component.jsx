@@ -9,8 +9,8 @@ import { getProcurementsAction } from "../../../app/feature/ProcurementListSlice
 import { getByEmailAction } from "../../../app/feature/UserSlice";
 import { jwtDecode } from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 const ProcurementHistory = () => {
@@ -24,7 +24,9 @@ const ProcurementHistory = () => {
     navigation.goBack();
   };
 
-  const { procurements } = useSelector((state) => state.procurements);
+  const { procurements, isLoading, error } = useSelector(
+    (state) => state.procurements
+  );
 
   useEffect(() => {
     const fetchEmailFromToken = async () => {
@@ -101,10 +103,12 @@ const ProcurementHistory = () => {
           <Text style={styles.tipsText}>
             See all procurement history from your employee
           </Text>
-          {filteredProcurements.length === 0 ? (
-            <Text style={styles.noRequestText}>
-              No procurement history from employee
-            </Text>
+          {isLoading ? (
+            <Text style={styles.loadingText}>Loading...</Text>
+          ) : error ? (
+            <Text style={styles.errorText}>Error: {error}</Text>
+          ) : filteredProcurements.length === 0 ? (
+            <Text style={styles.noRequestText}>No request history</Text>
           ) : (
             <FlatList
               data={filteredProcurements}
@@ -180,4 +184,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 250,
   },
+  loadingText: {
+    textAlign: "center",
+    fontFamily: FontFamily.soraRegular,
+    color: "#898989",
+    fontSize: 12,
+    marginTop: 250,
+  }
 });

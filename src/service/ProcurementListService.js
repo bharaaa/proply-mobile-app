@@ -1,30 +1,30 @@
-import axiosInstance from './AxiosInstance';
+import axiosInstance from "./AxiosInstance";
 
 const ProcurementListService = () => {
   const getAll = async () => {
     try {
       const response = await axiosInstance.get("procurements");
       console.log(response.data);
-      
+
       if (response.data.statusCode === 200) {
         return response.data;
       } else {
         throw new Error(response.data.message || response.status);
       }
     } catch (error) {
-        console.log(error)
+      console.log(error);
       throw new Error(error.response?.data?.message);
     }
   };
 
   const approve = async (id, detailId) => {
     try {
-      const response = await axiosInstance.put('procurements/approve', {
+      const response = await axiosInstance.put("procurements/approve", {
         procurementId: id,
-        procurementDetailId: detailId
+        procurementDetailId: detailId,
       });
       console.log(response.data);
-  
+
       if (response.data.statusCode === 200) {
         return response.data;
       } else {
@@ -38,12 +38,12 @@ const ProcurementListService = () => {
 
   const reject = async (id, detailId) => {
     try {
-      const response = await axiosInstance.put('procurements/reject', {
+      const response = await axiosInstance.put("procurements/reject", {
         procurementId: id,
-        procurementDetailId: detailId
+        procurementDetailId: detailId,
       });
       console.log(response.data);
-  
+
       if (response.data.statusCode === 200) {
         return response.data;
       } else {
@@ -57,17 +57,26 @@ const ProcurementListService = () => {
 
   const getByUserId = async (userId) => {
     try {
-      const response = await axiosInstance.get(`procurements/search?user-id=${userId}`);
+      const response = await axiosInstance.get(`/procurements/search`, {
+        params: { "user-id": userId },
+      });
       console.log(response.data);
-      
+
       if (response.data.statusCode === 200) {
         return response.data;
       } else {
-        throw new Error(response.data.message || response.status);
+        throw new Error(
+          response.data.message ||
+            `Unexpected status code: ${response.data.statusCode}`
+        );
       }
     } catch (error) {
-      console.log(error)
-      throw new Error(error.response?.data?.message);
+      console.log(error);
+      throw new Error(
+        error.response?.data?.message ||
+          error.message ||
+          "An unknown error occurred"
+      );
     }
   };
 
@@ -75,7 +84,7 @@ const ProcurementListService = () => {
     getAll,
     approve,
     reject,
-    getByUserId
+    getByUserId,
   };
 };
 
