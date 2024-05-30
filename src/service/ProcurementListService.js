@@ -17,11 +17,10 @@ const ProcurementListService = () => {
     }
   };
 
-  const approve = async (id, detailId) => {
+  const approve = async (id) => {
     try {
       const response = await axiosInstance.put("procurements/approve", {
-        procurementId: id,
-        procurementDetailId: detailId,
+        procurementId: id
       });
       console.log(response.data);
 
@@ -36,11 +35,10 @@ const ProcurementListService = () => {
     }
   };
 
-  const reject = async (id, detailId) => {
+  const reject = async (id) => {
     try {
       const response = await axiosInstance.put("procurements/reject", {
-        procurementId: id,
-        procurementDetailId: detailId,
+        procurementId: id
       });
       console.log(response.data);
 
@@ -55,11 +53,10 @@ const ProcurementListService = () => {
     }
   };
 
-  const cancel = async (id, detailId) => {
+  const cancel = async (id) => {
     try {
       const response = await axiosInstance.put("procurements/cancel", {
-        procurementId: id,
-        procurementDetailId: detailId,
+        procurementId: id
       });
       console.log(response.data);
 

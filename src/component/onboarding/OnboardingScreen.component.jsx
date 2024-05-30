@@ -40,8 +40,8 @@ const OnboardingScreen = () => {
                             style={styles.onboarding}
                             />
                         </View>,
-                    title: 'Lorem ipsum dolor sit amet',
-                    subtitle: 'consectetur adipiscing elit, sed do eiusmod tempor incididunt',
+                    title: 'Streamline Your Procurement Process',
+                    subtitle: 'Effortlessly manage and optimize procurement ',
                     titleStyles: styles.title,
                     subTitleStyles: styles.subtitle,
                 },

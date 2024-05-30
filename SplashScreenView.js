@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Icon from './assets/icon.png'
+import Icon from './assets/icontext.png'
 
 const SplashScreenView = () => {
   return (

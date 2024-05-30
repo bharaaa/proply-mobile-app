@@ -34,7 +34,13 @@ const RequestHistoryDetail = () => {
           <View key={index}>
             <View style={styles.itemContainer}>
               <Text style={styles.itemText}>
-                Item name: {procurement.itemResponse.name}
+                {procurement.itemResponse ? (
+                  <Text style={styles.itemText}>
+                    Item name: {procurement.itemResponse.name}
+                  </Text>
+                ) : (
+                  <Text style={styles.statusText}>Funds</Text>
+                )}
               </Text>
               <Text style={styles.itemText}>
                 Quantity: {procurement.quantity}

@@ -34,7 +34,7 @@ export const rejectProcurementsAction = createAsyncThunk(
   "procurements/reject",
   async ({ procurementId, procurementDetailId }, { rejectWithValue }) => {
     try {
-      return await cancel(procurementId, procurementDetailId);
+      return await reject(procurementId, procurementDetailId);
     } catch (e) {
       return rejectWithValue(e.message);
     }
@@ -45,7 +45,7 @@ export const cancelProcurementsAction = createAsyncThunk(
   "procurements/cancel",
   async ({ procurementId, procurementDetailId }, { rejectWithValue }) => {
     try {
-      return await reject(procurementId, procurementDetailId);
+      return await cancel(procurementId);
     } catch (e) {
       return rejectWithValue(e.message);
     }
