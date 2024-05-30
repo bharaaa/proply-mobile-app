@@ -9,9 +9,6 @@ import { getProcurementsAction } from "../../../app/feature/ProcurementListSlice
 import { getByEmailAction } from "../../../app/feature/UserSlice";
 import { jwtDecode } from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-dayjs.extend(relativeTime);
 
 const ProcurementHistory = () => {
   const dispatch = useDispatch();
