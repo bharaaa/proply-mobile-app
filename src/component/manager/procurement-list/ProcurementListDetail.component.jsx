@@ -17,6 +17,7 @@ import {
   rejectProcurementsAction,
 } from "../../../app/feature/ProcurementListSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ProfilePhoto from "../../../../assets/profile.png";
 
 const ProcurementListDetail = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,6 @@ const ProcurementListDetail = () => {
     }
   };
 
-  // Function to save approval status to AsyncStorage
   const saveApprovalStatus = async (status) => {
     try {
       await AsyncStorage.setItem(
@@ -112,12 +112,12 @@ const ProcurementListDetail = () => {
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <Appbar.Header mode="center-aligned" style={styles.header}>
         <Appbar.BackAction onPress={handleHomeManager} />
-        <Appbar.Content title="Procurement Detail" titleStyle={styles.title} />
+        <Appbar.Content title="Procurement List Detail" titleStyle={styles.title} />
       </Appbar.Header>
       <View style={styles.container}>
         <View>
           <Image
-            source={{ uri: item.userResponse.profileImageUrl }}
+            source={item.userResponse.profileImageUrl ? { uri: item.userResponse.profileImageUrl } : ProfilePhoto}
             style={styles.imageContainer}
           />
         </View>
@@ -162,7 +162,7 @@ const ProcurementListDetail = () => {
             </>
           )}
           {approvalStatus[item.procurementId] && (
-            <Text style={styles.statusText}>
+            <Text style={styles.statusText2}>
               {approvalStatus[item.procurementId]}
             </Text>
           )}
@@ -199,6 +199,11 @@ const styles = StyleSheet.create({
   statusText: {
     fontFamily: FontFamily.soraSemiBold,
     fontSize: 20,
+  },
+  statusText2: {
+    fontFamily: FontFamily.soraSemiBold,
+    fontSize: 20,
+    marginBottom: 50
   },
   divider: {
     height: 1,

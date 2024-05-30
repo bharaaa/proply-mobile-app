@@ -74,7 +74,7 @@ const ProcurementHistory = () => {
         key={item.procurementId}
         onPress={() => {
           const { onPress, ...itemWithoutOnPress } = item;
-          navigation.navigate("ProcurementListDetail", {
+          navigation.navigate("ProcurementHistoryDetail", {
             item: itemWithoutOnPress,
           });
         }}

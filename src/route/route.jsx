@@ -34,7 +34,7 @@ const route = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Onboarding"
+        initialRouteName="Login"
         screenOptions={{
           gestureEnabled: true,
           gestureDirection: "horizontal",

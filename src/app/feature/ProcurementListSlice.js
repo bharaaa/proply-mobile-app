@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ProcurementListService from "../../service/ProcurementListService";
 import axiosInstance from "../../service/AxiosInstance";
 
-const { getAll, approve, reject, getByUserId } = ProcurementListService();
+const { getAll, approve, reject, cancel, getByUserId } = ProcurementListService();
 
 export const getProcurementsAction = createAsyncThunk(
   "procurements",
@@ -32,6 +32,17 @@ export const approveProcurementsAction = createAsyncThunk(
 
 export const rejectProcurementsAction = createAsyncThunk(
   "procurements/reject",
+  async ({ procurementId, procurementDetailId }, { rejectWithValue }) => {
+    try {
+      return await cancel(procurementId, procurementDetailId);
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
+export const cancelProcurementsAction = createAsyncThunk(
+  "procurements/cancel",
   async ({ procurementId, procurementDetailId }, { rejectWithValue }) => {
     try {
       return await reject(procurementId, procurementDetailId);
@@ -109,6 +120,21 @@ const ProcurementListSlice = createSlice({
       );
     });
     builder.addCase(rejectProcurementsAction.rejected, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(cancelProcurementsAction.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(cancelProcurementsAction.fulfilled, (state, action) => {
+      state.isLoading = false;
+      const updatedProcurement = action.payload;
+      state.procurements = state.procurements.map((procurement) =>
+        procurement.id === updatedProcurement.procurementId
+          ? { ...procurement, ...updatedProcurement }
+          : procurement
+      );
+    });
+    builder.addCase(cancelProcurementsAction.rejected, (state) => {
       state.isLoading = false;
     });
     builder.addCase(getProcurementsByUserIdAction.pending, (state) => {
