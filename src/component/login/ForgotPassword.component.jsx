@@ -19,19 +19,15 @@ import CustomAlert from "../../../CustomAlert";
 import { jwtDecode } from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
-import { loginAction } from "../../app/feature/AuthSlice";
+import { forgotPasswordAction, loginAction } from "../../app/feature/AuthSlice";
 
 const loginFormSchema = yup
   .object({
-    email: yup.string().email("Email not valid").required("Email is Required"),
-    password: yup
-      .string()
-      .min(5, "Password minimum 5 characters")
-      .required("Password must be filled"),
+    email: yup.string().email().required("Email is Required"),
   })
   .required();
 
-const Login = () => {
+const ForgotPassword = () => {
   const navigation = useNavigation();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const {
@@ -43,7 +39,6 @@ const Login = () => {
   } = useForm({
     defaultValues: {
       email: "",
-      password: "",
     },
     resolver: yupResolver(loginFormSchema),
   });
@@ -52,43 +47,30 @@ const Login = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const dispatch = useDispatch();
 
-  const onSubmit = async () => {
+  const onSubmit = async ({ email }) => {
     try {
-      const { email, password } = getValues();
+      console.log("Email", email);
 
-      const res = await dispatch(loginAction({ email, password }));
+      const res = await dispatch(forgotPasswordAction(email));
       console.log(res);
-
-      const token = res.payload.data.token;
-      await AsyncStorage.setItem("token", token);
-
-      const decodedToken = jwtDecode(token);
-      const role = decodedToken.role;
-      console.log("Role", role);
-
-      if (role === "ROLE_ADMIN") {
-        navigation.navigate("BottomTab");
-      } else if (role === "ROLE_MANAGER") {
-        navigation.navigate("BottomTab");
-      } else if (role === "ROLE_EMPLOYEE") {
-        navigation.navigate("BottomTabEmployee");
+      if (forgotPasswordAction.fulfilled.match(res)) {
+        navigation.navigate("ForgotPasswordSuccess");
+      } else {
+        setAlertMessage("Email not found in registered user");
+        setAlertVisible(true);
       }
     } catch (err) {
-      setAlertMessage("Invalid Email/Password");
+      setAlertMessage("An error occurred. Please try again.");
       setAlertVisible(true);
     }
   };
-
-  const handleForgotPassword = () => {
-    navigation.navigate("ForgotPassword")
-  }
 
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
-          <Text style={styles.welcomeText}>Welcome Back!</Text>
+          <Text style={styles.welcomeText}>Reset Password</Text>
         </View>
         <View style={styles.emailContainer}>
           <Controller
@@ -126,74 +108,18 @@ const Login = () => {
             <Text style={styles.errors}>{errors.email.message}</Text>
           )}
         </View>
-        <View style={styles.passwordContainer}>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                label="Password"
-                value={value}
-                onChangeText={onChange}
-                mode="outlined"
-                style={styles.passwordText}
-                activeOutlineColor="#4D869C"
-                outlineStyle={{ borderRadius: 10, borderColor: "#626262" }}
-                onBlur={onBlur}
-                secureTextEntry={!isShowPassword}
-                left={
-                  <TextInput.Icon
-                    icon={() => (
-                      <MaterialCommunityIcons
-                        name={"onepassword"}
-                        size={20}
-                        style={styles.icon}
-                      />
-                    )}
-                    onPress={() => {}}
-                  />
-                }
-              />
-            )}
-            name="password"
-          />
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={{
-              position: "absolute",
-              right: 20,
-              top: 25,
-            }}
-            onPress={() => setIsShowPassword(!isShowPassword)}
-          >
-            <MaterialCommunityIcons
-              name={isShowPassword ? "eye" : "eye-off"}
-              size={20}
-            />
-          </TouchableOpacity>
-          {errors.password && (
-            <Text style={styles.errors}>{errors.password.message}</Text>
-          )}
-        </View>
-        <View style={styles.forgotPasswordContainer}>
-          <TouchableOpacity activeOpacity={0.8} onPress={handleForgotPassword}>
-            <Text style={styles.forgotText}>Forgot Password?</Text>
-          </TouchableOpacity>
-        </View>
         <View style={styles.loginButtonContainer}>
           <Button
             mode="contained"
             onPress={handleSubmit(onSubmit)}
             style={styles.loginButton}
           >
-            <Text style={styles.loginButtonText}>Login</Text>
+            <Text style={styles.loginButtonText}>Send Email</Text>
           </Button>
           <CustomAlert
             isVisible={alertVisible}
             onClose={() => setAlertVisible(false)}
-            title="Login Failed"
+            title="Reset Password Failed"
             message={alertMessage}
             onConfirm={() => setAlertVisible(false)}
           />
@@ -203,7 +129,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;
 
 const styles = StyleSheet.create({
   container: {
@@ -217,7 +143,7 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     fontFamily: FontFamily.plusJakartaSansBold,
-    fontSize: 50,
+    fontSize: 40,
   },
   emailContainer: {
     marginHorizontal: 30,
@@ -278,11 +204,11 @@ const styles = StyleSheet.create({
     color: "grey",
   },
   forgotPasswordContainer: {
-    marginHorizontal: 32,
+    marginHorizontal: 30,
     marginVertical: 20,
   },
   forgotText: {
     fontFamily: FontFamily.soraMedium,
-    fontSize: 13
-  }
+    fontSize: 13,
+  },
 });
