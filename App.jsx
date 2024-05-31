@@ -9,6 +9,9 @@ import AppPaperProvider from './src/component/AppPaperProvider';
 import BottomTab from './src/component/bottom-navigation/BottomTab.component';
 import { Provider } from "react-redux";
 import store from './src/app/store';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreAllLogs();
 
 export default function App() {
   const [isShowSplash, setIsShowSplash] = useState(true)
